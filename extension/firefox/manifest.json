@@ -1,0 +1,34 @@
+{
+  "manifest_version": 2,
+  "name": "What-to-click",
+  "version": "1.0",
+  "description": "Create flow documentation in minutes.",
+  "icons": {
+    "48": "icons/record.png"
+  },
+  "permissions": [
+    "<all_urls>",
+    "activeTab",
+    "tabs"
+  ],
+  "browser_action": {
+    "default_icon": "icons/record.png",
+    "default_title": "Record what to click"
+  },
+  "background": {
+    "scripts": [
+      "background/index.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content/index.js"
+      ]
+    }
+  ]
+}
