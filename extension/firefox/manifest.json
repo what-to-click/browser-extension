@@ -30,5 +30,8 @@
         "content/index.js"
       ]
     }
+  ],
+  "web_accessible_resources": [
+    "content/page.html"
   ]
 }

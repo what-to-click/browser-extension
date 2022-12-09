@@ -1,7 +1,14 @@
 console.debug('hello from bg');
 
-browser.runtime.onMessage.addListener(({ type = 'general', data = {} }, sender) => {
+const images = [];
+browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, sender) => {
   if (type === 'mousedown') {
-    browser.tabs.captureVisibleTab().then((image) => localStorage.setItem('screen', image));
+    const image = await browser.tabs.captureVisibleTab();
+    images.push(image);
   }
+});
+
+browser.browserAction.onClicked.addListener(async () => {
+  const htmlImages = images.map((image) => `<img style="max-width: 50vw;" src="${image}">`);
+  const tab = await browser.tabs.create({ url: `/content/page.html?imgs=${encodeURIComponent(htmlImages)}`, active: false });
 });
