@@ -1,4 +1,6 @@
-const path = document.location.href;
-const imgs = decodeURIComponent(path.split('imgs=')[1]);
-console.debug({ imgs });
-document.body.innerHTML = imgs;
+async function main() {
+  const images = await browser.runtime.sendMessage({ type: 'fetchImages' });
+  document.body.innerHTML = images.map((image) => `<img src="${image}">`);
+}
+
+main();
