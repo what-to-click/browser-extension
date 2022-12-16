@@ -1,5 +1,10 @@
 browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, sender) => {
   if (type === 'mousedown') {
+    const currentSession = await localforage.getItem('currentSession');
+    if (currentSession == null) {
+      return;
+    }
+    const sessionKey = `images-${currentSession}`;
     const image = await browser.tabs.captureVisibleTab({
       format: 'jpeg',
       quality: 95,
@@ -11,16 +16,32 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
       }
     });
     await localforage.setItem(
-      'images',
-      [...await localforage.getItem('images') || [], image]
+      sessionKey,
+      [...await localforage.getItem(sessionKey) || [], {
+        image,
+        type: type,
+      }]
     );
 
-  }
-  if (type == 'fetchImages') {
-    return localforage.getItem('images') || [];
+  } else if (type === 'fetchImages') {
+    return await localforage.getItem(`images-${data.session}`) || [];
+  } else if (type === 'fetchSessions') {
+    return await localforage.getItem('sessions') || [];
   }
 });
 
 browser.browserAction.onClicked.addListener(async () => {
-  await browser.tabs.create({ url: `/content/page.html`, active: false });
+  const sessionActive = await localforage.getItem('currentSession');
+  if (sessionActive) {
+    await browser.tabs.create({ url: `/content/page.html?s=${encodeURIComponent(sessionActive)}`, active: false });
+    await localforage.setItem('currentSession', null);
+    await browser.browserAction.setIcon({ path: '/icons/record.png' });
+    await browser.browserAction.setBadgeText({ text: '' });
+  } else {
+    const session = new Date().toISOString();
+    await localforage.setItem('currentSession', session);
+    await localforage.setItem('sessions', [...(await localforage.getItem('sessions') || []), session]);
+    await browser.browserAction.setIcon({ path: '/icons/stop.png' });
+    await browser.browserAction.setBadgeText({ text: 'live' });
+  }
 });
