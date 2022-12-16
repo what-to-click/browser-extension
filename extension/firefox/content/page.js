@@ -2,7 +2,7 @@ async function main() {
   const sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s');
   const images = await browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
   const content = document.querySelector('.steps');
-  content.innerHTML = images.map(({ image }, index) => `<p><span class="index">${index + 1}</span> <span contenteditable class="step-description">Click</span></p><img src="${image}">`);
+  content.innerHTML = images.map(({ image, target }, index) => `<p><span class="index">${index + 1}</span> <span contenteditable class="step-description">Click <i>${target.innerText}</i>.</span></p><img src="${image}">`);
 }
 main();
 

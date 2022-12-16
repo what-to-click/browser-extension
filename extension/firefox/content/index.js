@@ -1,5 +1,3 @@
-document.body.style.border = "5px solid red";
-
 async function sendMessageToBg({ type = 'general', data = {} } = {}) {
   try {
     const response = await browser.runtime.sendMessage({ type, data });
@@ -16,7 +14,7 @@ document.addEventListener('mousedown', ({ pageX, pageY, target, }) => {
   sendMessageToBg({
     type: 'mousedown',
     data: {
-      x: pageX, y: pageY, size: imageSize, target: JSON.stringify(target)
+      x: pageX, y: pageY, size: imageSize, target: { innerText: target.innerText }
     }
   })
 });

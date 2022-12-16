@@ -20,6 +20,7 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
       [...await localforage.getItem(sessionKey) || [], {
         image,
         type: type,
+        target: data.target,
       }]
     );
 
