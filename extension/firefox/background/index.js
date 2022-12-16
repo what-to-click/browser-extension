@@ -27,6 +27,8 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
     return await localforage.getItem(`images-${data.session}`) || [];
   } else if (type === 'fetchSessions') {
     return await localforage.getItem('sessions') || [];
+  } else if (type === 'savePdf') {
+    return await browser.tabs.saveAsPDF({ toFileName: `what-to-click-${new Date().toDateString()}.pdf` });
   }
 });
 

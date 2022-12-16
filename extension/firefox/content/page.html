@@ -5,11 +5,46 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="page.css">
   <title>What to click</title>
+  <style>
+    * {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    header {
+      display: flex;
+    }
+
+    header h1 {
+      width: 80vw;
+      margin: 0 auto;
+    }
+
+    .steps {
+      margin: 0 auto;
+      max-width: 80vw;
+    }
+
+    .steps .index {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .steps .index::after {
+      content: ".";
+    }
+
+    .steps img {
+      max-height: 300px;
+    }
+  </style>
 </head>
 
 <body>
+  <section class="export" aria-label="Export">
+    <button id="exportPdf">Export PDF</button>
+    <button id="saveHtml">Save HTML</button>
+  </section>
   <header>
     <h1 contenteditable>What to click:</h1>
   </header>
