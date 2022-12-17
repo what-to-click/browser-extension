@@ -14,7 +14,13 @@ document.addEventListener('mousedown', ({ pageX, pageY, target, }) => {
   sendMessageToBg({
     type: 'mousedown',
     data: {
-      x: pageX, y: pageY, size: imageSize, target: { innerText: target.innerText }
+      x: pageX,
+      y: pageY,
+      size: imageSize,
+      target: {
+        innerText: target.innerText,
+        tagName: target.tagName,
+      }
     }
   })
 });

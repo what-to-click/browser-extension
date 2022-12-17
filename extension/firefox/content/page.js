@@ -1,23 +1,28 @@
+const tagToName = {
+  'BUTTON': 'button',
+  'A': 'link',
+  'INPUT': 'input field',
+};
+
 async function main() {
   const sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s');
   const images = await browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
   const content = document.querySelector('.steps');
-  content.innerHTML = images.map(({ image, target }, index) => `<p><span class="index">${index + 1}</span> <span contenteditable class="step-description">Click <i>${target.innerText}</i>.</span></p><img src="${image}">`);
+  content.innerHTML = images.map(({ image, target }, index) => `<p><span class="index">${index + 1}</span> <span contenteditable class="step-description">Click <i>${target.innerText}</i>${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</span></p><img src="${image}">`).join('\n');
 }
 main();
 
-function savePdf() {
-  browser.runtime.sendMessage({ type: 'savePdf' });
+async function savePdf() {
+  document.querySelector('.export').classList.add('hidden');
+  await browser.runtime.sendMessage({ type: 'savePdf' });
+  document.querySelector('.export').classList.remove('hidden');
 }
 
 function saveHtml() {
-  console.debug(`data:text/attachment;,
+  document.location = `data:text/attachment;,
   <!DOCTYPE html>
-  <html lang="en">
-  <head>${document.head.innerHTML}</head>
-  <body>${document.body.innerHTML}</body>
-  </html>
-  `);
+  ${encodeURIComponent(document.querySelector('html').innerHTML.replace(/^.*<section class="export"[\s\S]*?<\/section>/m, ''))}
+  `;
 }
 
 window.addEventListener('load', () => {
