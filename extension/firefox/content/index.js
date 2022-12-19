@@ -9,7 +9,6 @@ async function sendMessageToBg({ type = 'general', data = {} } = {}) {
 }
 
 document.addEventListener('mousedown', ({ pageX, pageY, target, }) => {
-  console.debug({ pageX, pageY, target });
   const imageSize = Math.max(window.screen.availHeight, window.screen.availWidth) * .3;
   sendMessageToBg({
     type: 'mousedown',
