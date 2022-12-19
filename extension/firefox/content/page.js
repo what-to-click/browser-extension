@@ -7,15 +7,19 @@ const tagToName = {
 async function main() {
   const sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s');
   const images = await browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
-  const content = document.querySelector('.steps');
-  content.innerHTML = images.map(({ image, target }, index) => `
+  const steps = images.map(({ image, target }, index) => `
     <div class="step">
       <p>
         <span class="index">${index + 1}</span> 
         <span contenteditable class="step-description">Click <i>${target.innerText}</i>${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</span>
       </p>
       <img src="${image}">
-    </div>`).join('\n');
+    </div>`
+  );
+  const parser = new DOMParser();
+  const stepElements = steps.map((html) => parser.parseFromString(html, 'text/html').querySelector('.step'));
+  const content = document.querySelector('.steps');
+  stepElements.forEach((step) => content.appendChild(step));
 }
 main();
 
