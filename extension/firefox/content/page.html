@@ -33,7 +33,39 @@
 
     @media (min-width: 1000px) {
       :root {
-        --content-width: 30vw;
+        --content-width: 50vw;
+      }
+
+      .step {
+        display: flex;
+      }
+
+      .step > p, .step > .step-image {
+        flex: 1;
+      }
+
+      .step {
+        box-sizing: border-box;
+        margin-top: 1em;
+      }
+    }
+
+    @media print {
+      :root {
+        --content-width: 100vw;
+      }
+
+      .step {
+        display: flex;
+      }
+
+      .step > p, .step > .step-image {
+        flex: 1;
+      }
+
+      .step {
+        box-sizing: border-box;
+        margin-top: 1em;
       }
     }
 
@@ -109,11 +141,27 @@
       content: ".";
     }
 
-    .steps img {
+    .step-image {
+      display: grid;
+    }
+
+    .step-image > .screenshot {
       min-width: 240px;
       max-width: 90%;
       border: 2px solid gray;
       border-radius: 1em;
+      flex: 1;
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .step-image > .cursor {
+      grid-column: 1;
+      grid-row: 1;
+      margin: auto;
+      width: 30px;
+      box-sizing: border-box;
+      padding-top: 25px;
     }
   </style>
 </head>
