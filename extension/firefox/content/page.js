@@ -35,7 +35,7 @@ async function savePdf() {
 function saveHtml() {
   document.location = `data:text/attachment;,
   <!DOCTYPE html>
-  ${encodeURIComponent(document.querySelector('html').innerHTML.replace(/^.*<section class="export"[\s\S]*?<\/section>/m, ''))}
+  ${encodeURIComponent(document.querySelector('html').innerHTML)}
   `;
 }
 
