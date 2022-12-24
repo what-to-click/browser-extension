@@ -8,10 +8,13 @@ async function main() {
   const sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s');
   const images = await browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
   const steps = images.map(({ image, target }, index) => `
-    <div class="step">
-      <p>
-        <span class="index">${index + 1}</span> 
-        <span contenteditable class="step-description">Click <i>${target.innerText}</i>${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</span>
+    <div class="step" data-step-index="${index + 1}">
+      <p class="step-description">
+        <span class="text-content">
+          <span class="index">${index + 1}</span> 
+          <span contenteditable class="content">Click <i>${target.innerText}</i>${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</span>
+        </span>
+        <button class="text-button delete-button">Remove step</button>
       </p>
       <div class="step-image">
         <img class="screenshot" src="${image}">
@@ -22,6 +25,7 @@ async function main() {
   const parser = new DOMParser();
   const stepElements = steps.map((html) => parser.parseFromString(html, 'text/html').querySelector('.step'));
   const content = document.querySelector('.steps');
+  stepElements.forEach((step, index) => step.addEventListener('click', () => deleteStep(index + 1)));
   stepElements.forEach((step) => content.appendChild(step));
 }
 main();
@@ -35,8 +39,23 @@ async function savePdf() {
 function saveHtml() {
   document.location = `data:text/attachment;,
   <!DOCTYPE html>
-  ${encodeURIComponent(document.querySelector('html').innerHTML)}
+  ${encodeURIComponent(document.querySelector('html').innerHTML.replace(/^.*<section class="export"[\s\S]*?<\/section>/m, ''))}
   `;
+}
+
+function deleteStep(index = -1) {
+  const step = document.querySelector(`[data-step-index="${index}"]`);
+  step.remove();
+  recountIndexes();
+}
+
+function recountIndexes() {
+  const steps = document.querySelectorAll('.step');
+  let index = 1;
+  for (const step of steps) {
+    step.querySelector('.index').innerText = index;
+    index++;
+  }
 }
 
 window.addEventListener('load', () => {
