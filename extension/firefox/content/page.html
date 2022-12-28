@@ -31,7 +31,7 @@
       }
     }
 
-    @media (min-width: 1000px) {
+    @media screen and (min-width: 1000px) {
       :root {
         --content-width: 50vw;
       }
@@ -69,13 +69,13 @@
       }
     }
 
-    @media (min-width: 500px) and (max-width: 999px) {
+    @media screen and (min-width: 500px) and (max-width: 999px) {
       :root {
         --content-width: 60vw;
       }
     }
 
-    @media (max-width: 499px) {
+    @media screen and (max-width: 499px) {
       :root {
         --content-width: 100vw;
       }
@@ -107,29 +107,34 @@
       box-sizing: border-box;
       margin-right: 1em;
       padding: .6em .9em;
-      border: 2px solid gray;
-      border-radius: 1em;
+      border-radius: 0em;
+      border: none;
       cursor: pointer;
       transition: .1s ease-out;
     }
 
     .export>button:hover {
       transform: scale(1.05);
-      border-radius: 0.9em;
     }
 
     .export>button:active {
       transform: scale(.95);
-      border-radius: 1.2em;
     }
 
     .hidden {
-      display: none;
+      display: none!important;
     }
 
     .steps {
       margin: 0 auto;
       max-width: var(--content-width);
+    }
+
+    .steps > .step {
+      box-sizing: border-box;
+      padding-top: 1em;
+      border-top: 1px dashed gray;
+
     }
 
     .steps .index {
@@ -148,8 +153,7 @@
     .step-image > .screenshot {
       min-width: 240px;
       max-width: 90%;
-      border: 2px solid gray;
-      border-radius: 1em;
+      border-radius: .1em;
       flex: 1;
       grid-column: 1;
       grid-row: 1;
@@ -167,6 +171,8 @@
     .step-description {
       display: flex;
       flex-direction: column;
+      margin-top: -.4rem;
+      padding-top: 0;
     }
 
     .step-description > .text-content {
@@ -177,7 +183,7 @@
       background: none;
       border: none;
       cursor: pointer;
-      opacity: .1;
+      opacity: .4;
       color: var(--foreground);
       display: inline;
       text-align: start;
@@ -191,12 +197,12 @@
 </head>
 
 <body>
-  <section class="export" aria-label="Export">
+  <section exportable="no" class="export" aria-label="Export">
     <button id="exportPdf">Export PDF</button>
     <button id="saveHtml">Save HTML</button>
   </section>
   <header>
-    <h1 contenteditable>What to click:</h1>
+    <h1 contenteditable autofocus>What to click:</h1>
   </header>
   <main>
     <section class="steps"></section>
