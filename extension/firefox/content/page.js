@@ -17,8 +17,10 @@ async function main() {
         <button exportable="no" class="text-button delete-button">Remove step</button>
       </p>
       <div class="step-image">
-        <img class="screenshot" src="${image}">
-        <img class="cursor" src="${cursorPng}">
+        <picture>
+          <img class="screenshot" src="${image}">
+          <img class="cursor" src="${cursorPng}">
+        </picture>
       </div>
     </div>`
   );

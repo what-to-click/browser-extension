@@ -9,7 +9,7 @@
   <style>
     :root {
       --foreground: #0a0a0a;
-      --background: #e0e0e0;
+      --background: #fafafa;
       --content-width: 50vw;
     }
 
@@ -19,7 +19,7 @@
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --foreground: #e0e0e0;
+        --foreground: #fafafa;
         --background: #0a0a0a;
       }
     }
@@ -27,7 +27,7 @@
     @media (prefers-color-scheme: light) {
       :root {
         --foreground: #0a0a0a;
-        --background: #e0e0e0;
+        --background: #fafafa;
       }
     }
 
@@ -150,22 +150,29 @@
       display: grid;
     }
 
-    .step-image > .screenshot {
-      min-width: 240px;
-      max-width: 90%;
+    .step-image > picture {
+      width: 300px;
+      max-width: 100%;
+      aspect-ratio: 1;
+      display: grid;
+    }
+
+    .step-image > picture > .screenshot {
+      width: 100%;
       border-radius: .1em;
       flex: 1;
       grid-column: 1;
       grid-row: 1;
     }
 
-    .step-image > .cursor {
+    .step-image > picture > .cursor {
       grid-column: 1;
       grid-row: 1;
       margin: auto;
-      width: 30px;
+      width: 50px;
       box-sizing: border-box;
       padding-top: 25px;
+      padding-left: 20px;
     }
 
     .step-description {
