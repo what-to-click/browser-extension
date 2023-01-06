@@ -10,4 +10,4 @@ Tired of showing your teammates what to click in yet another web-based service a
 1. Click the "red square" browser action to stop recording.
 1. A page with editable text will be opened, containing all of the steps you have performed with screenshots attached. Edit step descriptions to your liking and export or save the file.
 
-![Get Firefox Addon link](docs/assets/get-the-addon.png)
+[Get Firefox Addon](https://addons.mozilla.org/firefox/addon/what-to-click/)

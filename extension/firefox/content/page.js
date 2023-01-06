@@ -8,13 +8,13 @@ async function main() {
   const sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s');
   const images = await browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
   const steps = images.map(({ image, target }, index) => `
-    <div class="step" data-step-index="${index + 1}">
+    <div class="step" wtc-step-index="${index + 1}">
       <p class="step-description">
         <span class="text-content">
           <span class="index">${index + 1}</span> 
-          <span contenteditable class="content">Click <i>${target.innerText}</i>${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</span>
+          <span wtc-editable class="content">Click <i>${target.innerText}</i>${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</span>
         </span>
-        <button exportable="no" class="text-button delete-button">Remove step</button>
+        <button wtc-editor class="text-button delete-button">Remove step</button>
       </p>
       <div class="step-image">
         <picture>
@@ -29,30 +29,58 @@ async function main() {
   const content = document.querySelector('.steps');
   stepElements.forEach((step, index) => step.querySelector('.delete-button').addEventListener('click', () => deleteStep(index + 1)));
   stepElements.forEach((step) => content.appendChild(step));
+
+
+  document.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.remove('hidden'));
+  document.querySelectorAll('[wtc-editable]').forEach((element) => element.setAttribute('contenteditable', true));
 }
 main();
 
 async function savePdf() {
-  document.querySelector('.export').classList.add('hidden');
-  document.querySelectorAll('.delete-button').forEach((element) => element.classList.add('hidden'));
+  document.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.add('hidden'));
   await browser.runtime.sendMessage({ type: 'savePdf' });
-  document.querySelector('.export').classList.remove('hidden');
-  document.querySelectorAll('.delete-button').forEach((element) => element.classList.remove('hidden'));
+  document.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.remove('hidden'));
 }
 
 function saveHtml() {
   const pageHtml = document.querySelector('html').innerHTML;
   const documentToExport = new DOMParser().parseFromString(pageHtml, 'text/html');
-  documentToExport.querySelectorAll('[exportable="no"]').forEach((element) => element.remove());
-  documentToExport.querySelectorAll('[contenteditable]').forEach((element) => element.removeAttribute('contenteditable'));
+  documentToExport.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.add('hidden'));
+  documentToExport.querySelectorAll('[wtc-editable]').forEach((element) => element.removeAttribute('contenteditable'));
   document.location = `data:text/attachment;,
   <!DOCTYPE html>
   ${encodeURIComponent(documentToExport.querySelector('html').innerHTML)}
   `;
 }
 
+function saveMarkdown() {
+  const title = document.querySelector('h1').innerText;
+  const descriptions = [];
+  document.querySelectorAll('.step-description .content').forEach((el) => descriptions.push(el.innerText));
+  const screenshots = [];
+  document.querySelectorAll('.step-image .screenshot').forEach((el) => screenshots.push(el.src));
+  const markdown = 
+  `# ${title}
+
+${ descriptions.map((content, index) => `${index + 1}. ${content} \n ![${content}](${screenshots[index]})`).join('\n\n') }
+  `;
+  download(`What to click ${new Date().toDateString()}.md`, markdown, { type: 'text/markdown' });
+}
+
+function download(filename, data, options = { type: 'text/html' }) {
+  const blob = new Blob([data], options);
+  const url = URL.createObjectURL(blob);
+  const el = document.createElement('a');
+  el.href = url;
+  el.download = filename;
+  document.body.appendChild(el);
+  el.click();
+  document.body.removeChild(el);
+  URL.revokeObjectURL(url);
+}
+
 function deleteStep(index = -1) {
-  const step = document.querySelector(`[data-step-index="${index}"]`);
+  const step = document.querySelector(`[wtc-step-index="${index}"]`);
   step.remove();
   recountIndexes();
 }
@@ -68,6 +96,7 @@ function recountIndexes() {
 
 window.addEventListener('load', () => {
   document.getElementById('exportPdf').addEventListener('click', savePdf);
+  document.getElementById('exportMd').addEventListener('click', saveMarkdown);
   document.getElementById('saveHtml').addEventListener('click', saveHtml);
   document.querySelector('[autofocus]').focus();
 });

@@ -204,12 +204,13 @@
 </head>
 
 <body>
-  <section exportable="no" class="export" aria-label="Export">
+  <section wtc-editor class="export hidden" aria-label="Export">
     <button id="exportPdf">Export PDF</button>
+    <button id="exportMd">Export Markdown</button>
     <button id="saveHtml">Save HTML</button>
   </section>
   <header>
-    <h1 contenteditable autofocus>What to click:</h1>
+    <h1 wtc-editable autofocus>What to click:</h1>
   </header>
   <main>
     <section class="steps"></section>
