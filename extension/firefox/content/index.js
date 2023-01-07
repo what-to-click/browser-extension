@@ -23,3 +23,21 @@ document.addEventListener('mousedown', ({ pageX, pageY, target, }) => {
     }
   })
 });
+
+document.addEventListener('keypress', ({ pageX, pageY, target, }) => {
+  const rect = target.getBoundingClientRect();
+  console.debug({ rect });
+  const imageSize = Math.max(window.screen.availHeight, window.screen.availWidth) * .3;
+  sendMessageToBg({
+    type: 'keypress',
+    data: {
+      x: pageX,
+      y: pageY,
+      size: imageSize,
+      target: {
+        innerText: target.innerText,
+        tagName: target.tagName,
+      }
+    }
+  })
+});
