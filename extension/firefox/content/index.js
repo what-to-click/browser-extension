@@ -8,36 +8,28 @@ async function sendMessageToBg({ type = 'general', data = {} } = {}) {
   }
 }
 
-document.addEventListener('mousedown', ({ pageX, pageY, target, }) => {
-  const imageSize = Math.max(window.screen.availHeight, window.screen.availWidth) * .3;
-  sendMessageToBg({
-    type: 'mousedown',
-    data: {
-      x: pageX,
-      y: pageY,
-      size: imageSize,
-      target: {
-        innerText: target.innerText,
-        tagName: target.tagName,
-      }
-    }
-  })
-});
-
-document.addEventListener('keypress', ({ pageX, pageY, target, }) => {
+function figureOutTargetPositionOnPage(target) {
   const rect = target.getBoundingClientRect();
-  console.debug({ rect });
-  const imageSize = Math.max(window.screen.availHeight, window.screen.availWidth) * .3;
+  return {
+    x: rect.x + rect.width / 2,
+    y: (rect.y + rect.height / 2) + document.documentElement.scrollTop,
+    size: Math.max(Math.max(rect.width, rect.height) * 1.1, 300),
+  };
+}
+
+function reportStep(type = '', target) {
   sendMessageToBg({
-    type: 'keypress',
+    type: type,
     data: {
-      x: pageX,
-      y: pageY,
-      size: imageSize,
+      ...figureOutTargetPositionOnPage(target),
       target: {
         innerText: target.innerText,
         tagName: target.tagName,
       }
     }
-  })
+  });
+}
+
+['mousedown', 'focusin', 'keypress'].forEach((eventName) => {
+  document.addEventListener(eventName, ({ target }) => reportStep(eventName, target));
 });

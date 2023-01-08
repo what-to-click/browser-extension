@@ -1,40 +1,69 @@
 const tagToName = {
   'BUTTON': 'button',
   'A': 'link',
-  'INPUT': 'input field',
+  'INPUT': 'text field',
+  'TEXTAREA': 'text box',
 };
+
+const typeToAction = {
+  'mousedown': 'Click',
+  'focusin': 'Find',
+  'keypress': 'Type into',
+}
 
 async function main() {
   const sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s');
-  const images = await browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
-  const steps = images.map(({ image, target }, index) => `
+  const images = deduplicateClicksAndFocusSteps(await browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } }));
+  const steps = images.map(({ image, type, target }, index) => `
     <div class="step" wtc-step-index="${index + 1}">
       <p class="step-description">
         <span class="text-content">
           <span class="index">${index + 1}</span> 
-          <span wtc-editable class="content">Click <i>${target.innerText}</i>${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</span>
+          <span wtc-editable class="content">${typeToAction[type]} <i>${target.innerText}</i>${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</span>
         </span>
         <button wtc-editor class="text-button delete-button">Remove step</button>
       </p>
       <div class="step-image">
         <picture>
           <img class="screenshot" src="${image}">
-          <img class="cursor" src="${cursorPng}">
+          ${type === 'mousedown' ? `<img class="cursor" src="${cursorPng}">` : ''}
         </picture>
       </div>
     </div>`
   );
+  window.steps = images;
   const parser = new DOMParser();
   const stepElements = steps.map((html) => parser.parseFromString(html, 'text/html').querySelector('.step'));
   const content = document.querySelector('.steps');
   stepElements.forEach((step, index) => step.querySelector('.delete-button').addEventListener('click', () => deleteStep(index + 1)));
   stepElements.forEach((step) => content.appendChild(step));
-
-
   document.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.remove('hidden'));
   document.querySelectorAll('[wtc-editable]').forEach((element) => element.setAttribute('contenteditable', true));
 }
 main();
+
+function deduplicateClicksAndFocusSteps(steps = []) {
+  if (steps.length <= 1) {
+    return steps;
+  }
+  const deduplicated = [];
+  for (let i = 1; i < steps.length; i++) {
+    const prev = steps[i - 1];
+    const current = steps[i];
+    if (!['mousedown', 'focusin'].includes(prev.type) || !['mousedown', 'focusin'].includes(current.type)) {
+      if (i === 1) {
+        deduplicated.push(prev);
+      }
+      deduplicated.push(current);
+      continue;
+    }
+    if (Math.abs(prev.date.getTime() - current.date.getTime()) <= 100) {
+      if (prev.type === 'mousedown') deduplicated.push(prev);
+      else deduplicated.push(current);
+    }
+  }
+  return deduplicated;
+}
 
 async function savePdf() {
   document.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.add('hidden'));

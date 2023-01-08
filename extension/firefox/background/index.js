@@ -1,5 +1,6 @@
 browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, sender) => {
-  if (type === 'mousedown') {
+  console.debug({ type });
+  if (['mousedown', 'keypress', 'focusin'].includes(type)) {
     const currentSession = await localforage.getItem('currentSession');
     if (currentSession == null) {
       return;
@@ -21,6 +22,7 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
         image,
         type: type,
         target: data.target,
+        date: new Date(),
       }]
     );
 
