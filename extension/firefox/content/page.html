@@ -40,7 +40,8 @@
         display: flex;
       }
 
-      .step > p, .step > .step-image {
+      .step>p,
+      .step>.step-image {
         flex: 1;
       }
 
@@ -59,7 +60,8 @@
         display: flex;
       }
 
-      .step > p, .step > .step-image {
+      .step>p,
+      .step>.step-image {
         flex: 1;
       }
 
@@ -122,7 +124,7 @@
     }
 
     .hidden {
-      display: none!important;
+      display: none !important;
     }
 
     .steps {
@@ -130,7 +132,7 @@
       max-width: var(--content-width);
     }
 
-    .steps > .step {
+    .steps>.step {
       box-sizing: border-box;
       padding-top: 1em;
       border-top: 1px dashed gray;
@@ -150,14 +152,14 @@
       display: grid;
     }
 
-    .step-image > picture {
+    .step-image>picture {
       width: 300px;
       max-width: 100%;
       aspect-ratio: 1;
       display: grid;
     }
 
-    .step-image > picture > .screenshot {
+    .step-image>picture>.screenshot {
       width: 100%;
       border-radius: .1em;
       flex: 1;
@@ -165,7 +167,7 @@
       grid-row: 1;
     }
 
-    .step-image > picture > .cursor {
+    .step-image>picture>.cursor {
       grid-column: 1;
       grid-row: 1;
       margin: auto;
@@ -182,8 +184,25 @@
       padding-top: 0;
     }
 
-    .step-description > .text-content {
+    .step-description>.text-content {
       flex: 1;
+      display: flex;
+      gap: .4em;
+    }
+
+    .text-content>.content {
+      background-color: var(--background);
+      border: none;
+      color: var(--foreground);
+      width: 100%;
+      box-sizing: border-box;
+      margin-right: .8em;
+      margin-top: .8rem;
+      resize: none;
+    }
+
+    .text-content>.content[readonly] {
+      outline: none;
     }
 
     .text-button {

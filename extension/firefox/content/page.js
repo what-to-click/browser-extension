@@ -12,7 +12,7 @@ async function main() {
       <p class="step-description">
         <span class="text-content">
           <span class="index">${index + 1}</span> 
-          <span wtc-editable class="content">Click <i>${target.innerText}</i>${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</span>
+          <textarea wtc-textarea class="content">Click "${target.innerText}"${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</textarea>
         </span>
         <button wtc-editor class="text-button delete-button">Remove step</button>
       </p>
@@ -30,7 +30,12 @@ async function main() {
   stepElements.forEach((step, index) => step.querySelector('.delete-button').addEventListener('click', () => deleteStep(index + 1)));
   stepElements.forEach((step) => content.appendChild(step));
 
-
+  document.querySelectorAll('textarea').forEach((textarea) => {
+    textarea.addEventListener('input', (e) => {
+      const element = e.target;
+      element.style.height = `${element.scrollHeight}px`;
+    });
+  });
   document.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.remove('hidden'));
   document.querySelectorAll('[wtc-editable]').forEach((element) => element.setAttribute('contenteditable', true));
 }
@@ -47,6 +52,7 @@ function saveHtml() {
   const documentToExport = new DOMParser().parseFromString(pageHtml, 'text/html');
   documentToExport.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.add('hidden'));
   documentToExport.querySelectorAll('[wtc-editable]').forEach((element) => element.removeAttribute('contenteditable'));
+  documentToExport.querySelectorAll('[wtc-textarea]').forEach((element) => element.setAttribute('readonly', ''));
   document.location = `data:text/attachment;,
   <!DOCTYPE html>
   ${encodeURIComponent(documentToExport.querySelector('html').innerHTML)}
@@ -59,10 +65,10 @@ function saveMarkdown() {
   document.querySelectorAll('.step-description .content').forEach((el) => descriptions.push(el.innerText));
   const screenshots = [];
   document.querySelectorAll('.step-image .screenshot').forEach((el) => screenshots.push(el.src));
-  const markdown = 
-  `# ${title}
+  const markdown =
+    `# ${title}
 
-${ descriptions.map((content, index) => `${index + 1}. ${content} \n ![${content}](${screenshots[index]})`).join('\n\n') }
+${descriptions.map((content, index) => `${index + 1}. ${content} \n ![${content}](${screenshots[index]})`).join('\n\n')}
   `;
   download(`What to click ${new Date().toDateString()}.md`, markdown, { type: 'text/markdown' });
 }
