@@ -127,7 +127,8 @@
       display: none !important;
     }
 
-    .steps {
+    .steps,
+    footer {
       margin: 0 auto;
       max-width: var(--content-width);
     }
@@ -219,6 +220,12 @@
       text-decoration: underline;
       opacity: 1;
     }
+
+    footer {
+      box-sizing: border-box;
+      margin-top: 2em;
+      text-align: end;
+    }
   </style>
 </head>
 
@@ -234,6 +241,9 @@
   <main>
     <section class="steps"></section>
   </main>
+  <footer>
+    <time datetime=""></time>
+  </footer>
   <script src="page.js"></script>
   <style>
     @font-face {
