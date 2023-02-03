@@ -34,6 +34,7 @@ async function main() {
     textarea.style.height = `${textarea.scrollHeight}px`;
     textarea.addEventListener('input', (e) => {
       const element = e.target;
+      element.innerText = element.value;
       element.style.height = `${element.scrollHeight}px`;
     });
   });
