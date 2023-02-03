@@ -31,6 +31,7 @@ async function main() {
   stepElements.forEach((step) => content.appendChild(step));
 
   document.querySelectorAll('textarea').forEach((textarea) => {
+    textarea.style.height = `${textarea.scrollHeight}px`;
     textarea.addEventListener('input', (e) => {
       const element = e.target;
       element.style.height = `${element.scrollHeight}px`;

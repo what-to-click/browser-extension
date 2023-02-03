@@ -108,6 +108,28 @@
       :root {
         --content-width: 100vw;
       }
+
+      html {
+        scroll-snap-type: y proximity;
+        overflow-x: hidden;
+      }
+
+      .export {
+        scroll-snap-align: start;
+      }
+
+      header {
+        scroll-snap-align: start;
+        min-height: 30vh;
+        display: grid;
+        align-items: center;
+      }
+
+      .steps>.step {
+        scroll-snap-align: start;
+        min-height: 95vh;
+        padding-bottom: 1em;
+      }
     }
 
     body {
