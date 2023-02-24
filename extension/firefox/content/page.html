@@ -186,7 +186,7 @@
       box-sizing: border-box;
       padding-top: 1em;
       border-top: 1px dashed gray;
-
+      counter-increment: step;
     }
 
     .steps .index {
@@ -194,8 +194,10 @@
       font-weight: bold;
     }
 
-    .steps .index::after {
-      content: ".";
+    .steps .index::before {
+      font-size: 3rem;
+      font-weight: bold;
+      content: counter(step) ". ";
     }
 
     .step-image {
@@ -251,6 +253,7 @@
       margin-top: .8rem;
       resize: none;
       font-size: 1rem;
+      box-sizing: border-box;
     }
 
     .text-content>.content[readonly] {

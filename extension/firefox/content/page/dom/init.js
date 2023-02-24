@@ -10,7 +10,7 @@ function createStep({ image, target }, index) {
   <div class="step" wtc-step-index="${index + 1}">
     <p class="step-description">
       <span class="text-content">
-        <span class="index">${index + 1}</span> 
+        <span class="index"></span> 
         <textarea wtc-textarea class="content">Click "${target.innerText}"${tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : ''}.</textarea>
       </span>
       <button wtc-editor class="text-button delete-button">Remove step</button>
