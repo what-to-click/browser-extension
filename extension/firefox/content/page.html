@@ -13,9 +13,12 @@
   <title>What to click</title>
   <style>
     :root {
-      --foreground: #0a0a0a;
-      --background: #fafafa;
+      --foreground: #00191C;
+      --background: #E8F2EB;
       --content-width: 50vw;
+      --spacing: 1em;
+      --spacing-large: 2em;
+      --border-radius: .7em;
     }
 
     * {
@@ -24,15 +27,23 @@
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --foreground: #fafafa;
-        --background: #0a0a0a;
+        --foreground: #FFEBED;
+        --background: #1F0102;
+      }
+
+      body {
+        background: radial-gradient(circle at 29.14% 20.66%, #780206, transparent 100%), radial-gradient(circle at 62.15% 64.11%, #061161, transparent 100%), radial-gradient(circle at 77.69% 16.08%, rgba(255, 255, 255, 0.5), transparent 100%), radial-gradient(circle at 22.44% 76.46%, rgba(255, 255, 255, 0.5), transparent 100%), radial-gradient(circle at 50% 50%, #000000, #000000 100%);
       }
     }
 
     @media (prefers-color-scheme: light) {
       :root {
-        --foreground: #0a0a0a;
-        --background: #fafafa;
+        --foreground: #00191C;
+        --background: #E8F2EB;
+      }
+
+      body {
+        background: radial-gradient(circle at 15.6% 20.34%, #1CD8D2, transparent 100%), radial-gradient(circle at 77.56% 65.18%, #93EDC7, transparent 100%), radial-gradient(circle at 50% 50%, #f40826, #f40826 100%);
       }
     }
 
@@ -45,14 +56,13 @@
         display: flex;
       }
 
-      .step>p,
-      .step>.step-image {
+      .step>p {
         flex: 1;
       }
 
       .step {
         box-sizing: border-box;
-        margin-top: 1em;
+        margin-top: var(--spacing);
       }
     }
 
@@ -65,8 +75,7 @@
         display: flex;
       }
 
-      .step>p,
-      .step>.step-image {
+      .step>p {
         flex: 1;
       }
 
@@ -76,11 +85,11 @@
 
       .step {
         box-sizing: border-box;
-        margin-top: 1em;
+        margin-top: var(--spacing);
       }
     }
 
-    @media screen and (min-width: 500px) and (max-width: 999px) {
+    @media screen and (min-width: 700px) and (max-width: 999px) {
       :root {
         --content-width: 80vw;
       }
@@ -93,18 +102,17 @@
         width: 250px !important;
       }
 
-      .step>p,
-      .step>.step-image {
+      .step>p {
         flex: 1;
       }
 
       .step {
         box-sizing: border-box;
-        margin-top: 1em;
+        margin-top: var(--spacing);
       }
     }
 
-    @media screen and (max-width: 499px) {
+    @media screen and (max-width: 699px) {
       :root {
         --content-width: 100vw;
       }
@@ -128,14 +136,34 @@
       .steps>.step {
         scroll-snap-align: start;
         min-height: 95vh;
-        padding-bottom: 1em;
+        padding-bottom: var(--spacing);
+      }
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      25% {
+        background-position: 100% 50%;
+      }
+
+      75% {
+        background-position: 50% 100%;
+      }
+
+      100% {
+        background-position: 0% 50%;
       }
     }
 
     body {
       color: var(--foreground);
-      background-color: var(--background);
       min-width: 200px;
+      background-size: 400% 400%;
+      animation: gradient 30s ease infinite;
+      min-height: 100svh;
     }
 
     .export,
@@ -151,25 +179,27 @@
 
     .export {
       box-sizing: border-box;
-      margin-bottom: 1em;
+      margin-bottom: var(--spacing);
     }
 
     .export>button {
       box-sizing: border-box;
-      margin-right: 1em;
-      padding: .6em .9em;
-      border-radius: 0em;
+      margin-right: var(--spacing);
+      padding: var(--spacing) var(--spacing-large);
+      border-radius: var(--border-radius);
+      background-color: var(--background);
+      color: var(--foreground);
       border: none;
       cursor: pointer;
       transition: .1s ease-out;
     }
 
     .export>button:hover {
-      transform: scale(1.05);
+      filter: drop-shadow(calc(var(--spacing) / 3) calc(var(--spacing) / 3) 0 var(--foreground)) saturate(2);
     }
 
     .export>button:active {
-      transform: scale(.95);
+      filter: drop-shadow(calc(var(--spacing) / 5) calc(var(--spacing) / 5) 0 var(--foreground));
     }
 
     .hidden {
@@ -184,13 +214,19 @@
 
     .steps>.step {
       box-sizing: border-box;
-      padding-top: 1em;
-      border-top: 1px dashed gray;
+      padding: var(--spacing-large);
+      margin-top: var(--spacing-large);
       counter-increment: step;
+      background-color: var(--background);
+      border-radius: var(--border-radius);
+      filter: drop-shadow(calc(var(--spacing) / 4) calc(var(--spacing) / 4) 0 var(--foreground));
     }
 
     .steps .index {
       font-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+      display: block;
       font-weight: bold;
     }
 
@@ -214,7 +250,7 @@
 
     .step-image>picture>.screenshot {
       width: 100%;
-      border-radius: .1em;
+      border-radius: calc(var(--border-radius) - .1em);
       flex: 1;
       grid-column: 1;
       grid-row: 1;
@@ -233,14 +269,14 @@
     .step-description {
       display: flex;
       flex-direction: column;
-      margin-top: -.4rem;
+      margin-top: -.4em;
       padding-top: 0;
     }
 
     .step-description>.text-content {
       flex: 1;
       display: flex;
-      gap: .4em;
+      gap: var(--spacing);
     }
 
     .text-content>.content {
@@ -249,8 +285,8 @@
       color: var(--foreground);
       width: 100%;
       box-sizing: border-box;
-      margin-right: .8em;
-      margin-top: .8rem;
+      margin-right: var(--spacing);
+      margin-top: var(--spacing);
       resize: none;
       font-size: 1rem;
       box-sizing: border-box;
@@ -271,13 +307,13 @@
     }
 
     .text-button:hover {
-      text-decoration: underline;
+      text-decoration: underline dashed;
       opacity: 1;
     }
 
     footer {
       box-sizing: border-box;
-      margin-top: 2em;
+      margin-top: var(--spacing-large);
       text-align: end;
     }
   </style>
