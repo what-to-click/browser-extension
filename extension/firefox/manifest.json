@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "What-to-click",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Create how-to documentation in seconds.",
   "icons": {
     "48": "icons/record.png"
