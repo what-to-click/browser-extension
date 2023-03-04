@@ -14,14 +14,12 @@ window.addEventListener('load', async () => {
   const worker = await Tesseract.createWorker({
     workerPath: './deps/worker@4.0.2.min.js',
     workerBlobURL: false,
-    langPath: './deps/eng-fast.traineddata.gz',
+    langPath: './deps',
     corePath: './deps/tesseract-core@4.0.2.wasm.js'
   });
 
-  const { data: { text } } = await worker.recognize(
-    document.querySelector('.screenshot'),
-    'eng',
-    { logger: m => console.log(m) }
-  );
+  await worker.loadLanguage('eng-fast');
+  await worker.initialize('eng-fast');
+  const { data: { text } } = await worker.recognize(document.querySelector('.screenshot'));
   console.debug(text);
 });
