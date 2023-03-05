@@ -20,6 +20,14 @@ window.addEventListener('load', async () => {
 
   await worker.loadLanguage('eng-fast');
   await worker.initialize('eng-fast');
-  const { data: { text } } = await worker.recognize(document.querySelector('.screenshot'));
-  console.debug(text);
+  const result = await worker.recognize(document.querySelector('.screenshot'));
+  const words = result.data.paragraphs.map(({ lines }) => {
+    return lines.map((line) => line.words.map((word) => {
+      return {
+        word: word.choices[0],
+        box: word.bbox
+      }
+    })).flat();
+  }).flat();
+  console.debug(words);
 });
