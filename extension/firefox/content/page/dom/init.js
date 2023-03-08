@@ -18,6 +18,7 @@ function createStep({ image, target }, index) {
     <div class="step-image">
       <picture>
         <img class="screenshot" src="${image}">
+        <div class="scrub-overlay"></div>
         <img class="cursor" src="${cursorPng}">
       </picture>
     </div>

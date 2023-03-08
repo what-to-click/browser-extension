@@ -257,12 +257,43 @@
       display: grid;
     }
 
-    .step-image>picture>.screenshot {
+    .step-image>picture>.screenshot,
+    .step-image>picture>.scrub-overlay {
       width: 100%;
       border-radius: calc(var(--border-radius) - .1em);
       flex: 1;
       grid-column: 1;
       grid-row: 1;
+    }
+
+    .step-image>picture>.scrub-overlay {
+      position: relative;
+    }
+
+    .step-image>picture>.scrub-overlay>.scrub-element {
+      position: absolute;
+      box-sizing: border-box;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      transition: .1s;
+    }
+
+    .step-image>picture>.scrub-overlay>.scrub-element:hover,
+    .step-image>picture>.scrub-overlay>.scrub-element.scrubbed:hover {
+      background-color: var(--background);
+      border: 2px dotted var(--foreground);
+      opacity: .5;
+    }
+
+    .step-image>picture>.scrub-overlay>.scrub-element.scrubbed:hover {
+      opacity: .3;
+      border: 2px solid var(--foreground);
+    }
+
+    .step-image>picture>.scrub-overlay>.scrub-element.scrubbed {
+      background-color: var(--background);
+      opacity: 1;
     }
 
     .step-image>picture>.cursor {
