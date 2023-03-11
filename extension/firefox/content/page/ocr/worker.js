@@ -7,7 +7,7 @@ async function initWorker() {
     workerPath: './deps/worker@4.0.2.min.js',
     workerBlobURL: false,
     langPath: './deps',
-    corePath: './deps/tesseract-core@4.0.2.wasm.js',
+    corePath: './deps/tesseract-core@4.0.2.wasm',
     tessedit_create_hocr: '0',
     tessedit_create_tsv: '0',
     tessedit_create_box: '0',
