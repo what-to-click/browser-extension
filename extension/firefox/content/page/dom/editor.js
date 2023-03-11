@@ -20,13 +20,14 @@ export function attachScrubs(screenshots = []) {
         const scrubElementHtml = `
           <div 
             class="scrub-element"
-            wtc-word=${JSON.stringify({ word, box })}
+            wtc-word="${encodeURIComponent(JSON.stringify({ word, box }))}"
             style="width: ${width}%; height: ${height}%; top: ${top}%; left: ${left}%"
           ></div>
         `;
         const scrubElement = parser.parseFromString(scrubElementHtml, 'text/html').querySelector('.scrub-element');
         scrubElement.addEventListener('click', () => {
           scrubElement.classList.toggle('scrubbed');
+          scrubElement.c
         });
         overlay.appendChild(scrubElement);
       }

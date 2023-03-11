@@ -34,14 +34,17 @@ async function recognizeWords(element) {
 
 
 export async function attachOcrInfo(screenshots) {
+  document.querySelector('.ocr-loading-indicator').classList.toggle('hidden');
   if (worker == null) {
     await initWorker();
   }
   for (const screenshot of screenshots) {
-    screenshot.parentNode.classList.toggle('loading');
+    const overlay = screenshot.parentNode.querySelector('.loading-overlay');
+    overlay.classList.toggle('loading');
     const words = await recognizeWords(screenshot);
     const serialized = JSON.stringify(words);
     screenshot.setAttribute('wtc-ocr', serialized);
-    screenshot.parentNode.classList.toggle('loading');
+    overlay.classList.toggle('loading');
   }
+  document.querySelector('.ocr-loading-indicator').classList.toggle('hidden');
 }

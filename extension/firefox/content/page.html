@@ -17,7 +17,7 @@
       --background: #E8F2EB;
       --content-width: 50vw;
       --spacing: 1em;
-      --spacing-large: 2em;
+      --spacing-large: 1.4em;
       --border-radius: .7em;
     }
 
@@ -131,7 +131,8 @@
         overflow-x: hidden;
       }
 
-      .export {
+      .export,
+      .ocr-info {
         scroll-snap-align: start;
       }
 
@@ -175,18 +176,27 @@
       min-height: 100svh;
     }
 
+    .ocr-info>.ocr-loading-indicator {
+      display: flex;
+      gap: var(--spacing);
+      align-items: center;
+    }
+
     .export,
+    .ocr-info,
     header {
       display: flex;
     }
 
     .export,
+    .ocr-info,
     header h1 {
       width: var(--content-width);
       margin: 0 auto;
     }
 
-    .export {
+    .export,
+    .ocr-info {
       box-sizing: border-box;
       margin-bottom: var(--spacing);
     }
@@ -223,8 +233,8 @@
 
     .steps>.step {
       box-sizing: border-box;
-      padding: var(--spacing-large);
-      margin-top: var(--spacing-large);
+      padding: var(--spacing) var(--spacing-large);
+      margin-top: var(--spacing);
       counter-increment: step;
       background-color: var(--background);
       border-radius: var(--border-radius);
@@ -258,7 +268,8 @@
     }
 
     .step-image>picture>.screenshot,
-    .step-image>picture>.scrub-overlay {
+    .step-image>picture>.scrub-overlay,
+    .step-image>picture>.loading-overlay {
       width: 100%;
       border-radius: calc(var(--border-radius) - .1em);
       flex: 1;
@@ -355,6 +366,23 @@
       box-sizing: border-box;
       margin-top: var(--spacing-large);
       text-align: end;
+      display: flex;
+      gap: 1em;
+      justify-content: space-between;
+    }
+
+    .loading-inline:after {
+      content: '';
+      box-sizing: border-box;
+      display: inline-block;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 2rem;
+      background-color: var(--background);
+      border: 5px solid var(--background);
+      border-top-color: var(--foreground);
+      animation: fullSpin 1.6s ease-in-out infinite;
+      box-shadow: 0px 4px 0px -6px var(--foreground);
     }
 
     .loading:after {
@@ -389,7 +417,18 @@
   <section wtc-editor class="export hidden" aria-label="Export">
     <button id="exportPdf">Export PDF</button>
     <button id="exportMd">Export Markdown</button>
-    <button id="saveHtml">Save HTML</button>
+    <button id="saveHtml"
+      title="HTML files are editable and contain all available information, even scrubbed words. Export a PDF or Markdown file to get words scrubbed in an unrecoverable way.">
+      Save HTML (editable scrubs)
+    </button>
+  </section>
+  <section wtc-editor class="ocr-info">
+    <p class="ocr-loading-indicator hidden">
+      <span class="loading-inline"></span> Offline image analysis in progress
+    </p>
+    <p class="scrub-info">
+      ℹ️ After the offline image analysis is complete, you can click on a word in each screenshot to get it scrubbed.
+    </p>
   </section>
   <header>
     <h1 wtc-editable autofocus>What to click:</h1>
@@ -398,6 +437,12 @@
     <section class="steps"></section>
   </main>
   <footer>
+    <a wtc-editor target="blank" href="https://github.com/wrbl606/what-to-click/issues">Report an issue</a>
+    <span wtc-editor>
+      Built with
+      <a href="https://github.com/localForage/localForage" target="blank">localforage</a> and
+      <a href="https://github.com/naptha/tesseract.js" target="tesseract.js">tesseract.js</a>
+    </span>
     <time datetime=""></time>
   </footer>
   <script src="page.js" type="module"></script>
