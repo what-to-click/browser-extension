@@ -1,4 +1,7 @@
+import { loadImages } from './dom/init.js';
+
 export async function savePdf() {
+  document.querySelectorAll('.screenshot').forEach(applyScrubs);
   document.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.add('hidden'));
   const textareas = [];
   document.querySelectorAll('[wtc-textarea]').forEach((textarea) => {
@@ -17,6 +20,7 @@ export async function savePdf() {
     textarea.style.height = `${textarea.scrollHeight}px`;
   });
   document.querySelectorAll('[wtc-editor]').forEach((element) => element.classList.remove('hidden'));
+  await removeScrubs();
 }
 
 export function saveHtml() {
@@ -38,7 +42,8 @@ export function saveHtml() {
   `;
 }
 
-export function saveMarkdown() {
+export async function saveMarkdown() {
+  document.querySelectorAll('.screenshot').forEach(applyScrubs);
   const title = document.querySelector('h1').innerText;
   const descriptions = [];
   document.querySelectorAll('.step-description .content').forEach((el) => descriptions.push(el.value));
@@ -50,6 +55,7 @@ export function saveMarkdown() {
 ${descriptions.map((content, index) => `${index + 1}. ${content} \n ![${content}](${screenshots[index]})`).join('\n\n')}
   `;
   download(`What to click ${new Date().toDateString()}.md`, markdown, { type: 'text/markdown' });
+  await removeScrubs();
 }
 
 export function download(filename, data, options = { type: 'text/html' }) {
@@ -62,4 +68,30 @@ export function download(filename, data, options = { type: 'text/html' }) {
   el.click();
   document.body.removeChild(el);
   URL.revokeObjectURL(url);
+}
+
+function applyScrubs(screenshot) {
+  const canvas = document.createElement('canvas');
+  canvas.style = "width: 100%";
+  const context = canvas.getContext('2d');
+  canvas.width = screenshot.naturalWidth;
+  canvas.height = screenshot.naturalHeight;
+  context.drawImage(screenshot, 0, 0, screenshot.naturalWidth, screenshot.naturalHeight);
+  const scrubs = screenshot.parentNode.querySelectorAll('.scrub-overlay>.scrubbed');
+  for (const scrub of scrubs) {
+    const { box } = JSON.parse(decodeURIComponent(scrub.getAttribute('wtc-word')));
+    const { x0, y0, x1, y1 } = box;
+    context.beginPath();
+    context.rect(x0, y0, x1 - x0, y1 - y0);
+    context.fill();
+  }
+  screenshot.src = canvas.toDataURL('image/jpeg');
+}
+
+async function removeScrubs() {
+  const steps = await loadImages();
+  const screenshots = document.querySelectorAll('.screenshot');
+  steps.forEach(({ image }, index) => {
+    screenshots[index].src = image;
+  });
 }

@@ -1,7 +1,7 @@
 import { tagToName } from "../tagToName.js";
 import { deleteStep } from "./editor.js";
 
-async function loadImages(sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s')) {
+export async function loadImages(sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s')) {
   return browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
 }
 
@@ -18,6 +18,8 @@ function createStep({ image, target }, index) {
     <div class="step-image">
       <picture>
         <img class="screenshot" src="${image}">
+        <div class="scrub-overlay"></div>
+        <div class="loading-overlay" wtc-editor></div>
         <img class="cursor" src="${cursorPng}">
       </picture>
     </div>
