@@ -2,17 +2,18 @@ import * as ocr from '../../deps/tesseract@4.0.2.min.js';
 
 let worker;
 
-async function initWorker() {
+async function initWorker(root = window.location.origin) {
   const w = await Tesseract.createWorker({
-    workerPath: './deps/worker@4.0.2.min.js',
+    workerPath: `${root}/content/deps/worker@4.0.2.min.js`,
     workerBlobURL: false,
-    langPath: './deps',
-    corePath: './deps/tesseract-core@4.0.2.wasm',
+    langPath: `${root}/content/deps/`,
+    corePath: `${root}/content/deps/tesseract-core@4.0.2.wasm.js`,
     tessedit_create_hocr: '0',
     tessedit_create_tsv: '0',
     tessedit_create_box: '0',
     tessedit_create_unlv: '0',
     tessedit_create_osd: '0',
+    errorHandler: e => console.error(e)
   });
   await w.loadLanguage('eng-fast');
   await w.initialize('eng-fast');
