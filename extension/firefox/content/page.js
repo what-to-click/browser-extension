@@ -12,6 +12,6 @@ window.addEventListener('load', async () => {
   document.querySelector('[autofocus]').focus();
   document.querySelector('h1').addEventListener('keyup', updateMeta);
 
-  // attachScrubs(document.querySelectorAll('.screenshot'));
-  // attachOcrInfo(document.querySelectorAll('.screenshot'));
+  attachScrubs(document.querySelectorAll('.screenshot'));
+  attachOcrInfo(document.querySelectorAll('.screenshot'));
 });
