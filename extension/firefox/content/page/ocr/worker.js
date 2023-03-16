@@ -1,50 +1,39 @@
-import * as ocr from '../../deps/tesseract@4.0.2.min.js';
-
-let worker;
-
-async function initWorker(root = window.location.origin) {
-  const w = await Tesseract.createWorker({
-    workerPath: `${root}/content/deps/worker@4.0.2.min.js`,
-    workerBlobURL: false,
-    langPath: `${root}/content/deps/`,
-    corePath: `${root}/content/deps/tesseract-core@4.0.2.wasm.js`,
-    tessedit_create_hocr: '0',
-    tessedit_create_tsv: '0',
-    tessedit_create_box: '0',
-    tessedit_create_unlv: '0',
-    tessedit_create_osd: '0',
-    errorHandler: e => console.error(e)
-  });
-  await w.loadLanguage('eng-fast');
-  await w.initialize('eng-fast');
-  worker = w;
-  return w;
-}
+const serverUrl = 'http://localhost:3001';
 
 async function recognizeWords(element) {
-  const result = await worker.recognize(element);
-  return result.data.paragraphs.map(({ lines }) => {
-    return lines.map((line) => line.words.map((word) => {
-      return {
-        word: word.choices[0],
-        box: word.bbox,
-      };
-    })).flat();
-  }).flat();
+  const result = await fetch(serverUrl, {
+    method: 'POST',
+    body: imageDataFormFor(element),
+  });
+  return result.json();
 }
 
+function imageDataFormFor(element) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = element.naturalWidth;
+  canvas.height = element.naturalHeight;
+  context.drawImage(element, 0, 0, element.naturalWidth, element.naturalHeight);
+  const formData = new FormData();
+  formData.append('image', canvas.toDataURL('image/jpeg'));
+  return formData;
+}
 
 export async function attachOcrInfo(screenshots) {
   document.querySelector('.ocr-loading-indicator').classList.toggle('hidden');
-  if (worker == null) {
-    await initWorker();
-  }
+  document.querySelector('.ocr-error-indicator').classList.add('hidden');
   for (const screenshot of screenshots) {
     const overlay = screenshot.parentNode.querySelector('.loading-overlay');
     overlay.classList.toggle('loading');
-    const words = await recognizeWords(screenshot);
-    const serialized = JSON.stringify(words);
-    screenshot.setAttribute('wtc-ocr', serialized);
+    let words = [];
+    try {
+      words = await recognizeWords(screenshot);
+      const serialized = JSON.stringify(words);
+      screenshot.setAttribute('wtc-ocr', serialized);
+    } catch (e) {
+      console.error('Unable to access OCR service for ', screenshot, e);
+      document.querySelector('.ocr-error-indicator').classList.remove('hidden');
+    }
     overlay.classList.toggle('loading');
   }
   document.querySelector('.ocr-loading-indicator').classList.toggle('hidden');

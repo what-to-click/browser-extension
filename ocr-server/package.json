@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "PORT=3001 nodemon ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

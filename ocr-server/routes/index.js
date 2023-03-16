@@ -1,6 +1,6 @@
 const express = require('express');
+const { recognizeWords } = require('../service/ocr/ocr');
 const router = express.Router();
-const ocr = require('tesseract.js');
 const upload = require('multer')({
   storage: require('multer').memoryStorage(),
   limits: {
@@ -14,20 +14,9 @@ router.post('/', upload.single('image'), async function (req, res, next) {
     return res.status(400).send();
   }
 
-  const result = await ocr.recognize(
-    (req.file && req.file.buffer) || req.body.image,
-    'eng',
-    { logger: m => console.debug(m) }
+  const words = await recognizeWords(
+    (req.file && req.file.buffer) || req.body.image
   );
-  console.debug(Object.keys(result.data))
-  const words = result.data.paragraphs.map(({ lines }) => {
-    return lines.map((line) => line.words.map((word) => {
-      return {
-        word: word.choices[0],
-        box: word.bbox
-      }
-    })).flat();
-  }).flat();
   res.send(words);
 });
 
