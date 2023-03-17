@@ -12,6 +12,12 @@ window.addEventListener('load', async () => {
   document.querySelector('[autofocus]').focus();
   document.querySelector('h1').addEventListener('keyup', updateMeta);
 
+  // If we don't wait here, FF can't send the first image (no error is shown)
+  await delay(1000);
   attachScrubs(document.querySelectorAll('.screenshot'));
   attachOcrInfo(document.querySelectorAll('.screenshot'));
 });
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
