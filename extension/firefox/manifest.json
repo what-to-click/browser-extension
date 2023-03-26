@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "What-to-click",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "AI-powered how-to documentation creator.",
   "icons": {
     "48": "icons/record.png"
@@ -31,5 +31,13 @@
   ],
   "web_accessible_resources": [
     "content/page.html"
-  ]
+  ],
+  "content_security_policy": "script-src 'self' https://wtc.wrbl.xyz",
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Alt+R"
+      }
+    }
+  }
 }
