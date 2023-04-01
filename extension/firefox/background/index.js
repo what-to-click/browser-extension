@@ -21,6 +21,7 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
         image,
         type: type,
         target: data.target,
+        url: data.url,
       }]
     );
 
@@ -42,10 +43,12 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
 browser.browserAction.onClicked.addListener(async () => {
   const sessionActive = await localforage.getItem('currentSession');
   if (sessionActive) {
-    await browser.tabs.create({ url: `/content/page.html?s=${encodeURIComponent(sessionActive)}`, active: false });
     await localforage.setItem('currentSession', null);
     await browser.browserAction.setIcon({ path: '/icons/record.png' });
     await browser.browserAction.setBadgeText({ text: '' });
+    if ((await localforage.getItem(`images-${sessionActive}`)).length > 0) {
+      await browser.tabs.create({ url: `/content/page.html?s=${encodeURIComponent(sessionActive)}`, active: false });
+    }
   } else {
     const session = new Date().toISOString();
     await localforage.setItem('currentSession', session);
