@@ -13,8 +13,9 @@
   <title>What to click</title>
   <style>
     :root {
-      --foreground: #00191C;
-      --background: #E8F2EB;
+      --foreground: #1A1918;
+      --background: #FFFCFA;
+      --background-level-1: #EDEBE8;
       --content-width: 50vw;
       --spacing: 1em;
       --spacing-large: 1.4em;
@@ -27,23 +28,25 @@
 
     @media screen and (prefers-color-scheme: dark) {
       :root {
-        --foreground: #FFEBED;
-        --background: #1F0102;
+        --foreground: #FFFCFA;
+        --background: #1A1918;
+        --background-level-1: #383634;
       }
 
       body {
-        background: radial-gradient(circle at 29.14% 20.66%, #780206, transparent 100%), radial-gradient(circle at 62.15% 64.11%, #061161, transparent 100%), radial-gradient(circle at 77.69% 16.08%, rgba(255, 255, 255, 0.5), transparent 100%), radial-gradient(circle at 22.44% 76.46%, rgba(255, 255, 255, 0.5), transparent 100%), radial-gradient(circle at 50% 50%, #000000, #000000 100%);
+        background-color: var(--background);
       }
     }
 
     @media screen and (prefers-color-scheme: light) {
       :root {
-        --foreground: #00191C;
-        --background: #E8F2EB;
+        --foreground: #1A1918;
+        --background: #FFFCFA;
+        --background-level-1: #EDEBE8;
       }
 
       body {
-        background: radial-gradient(circle at 15.6% 20.34%, #1CD8D2, transparent 100%), radial-gradient(circle at 77.56% 65.18%, #93EDC7, transparent 100%), radial-gradient(circle at 50% 50%, #f40826, #f40826 100%);
+        background-color: var(--background);
       }
     }
 
@@ -71,6 +74,7 @@
         --content-width: 100vw;
         --foreground: #000000;
         --background: #ffffff;
+        --background-level-1: #ffffff;
       }
 
       .step {
@@ -206,7 +210,7 @@
       margin-right: var(--spacing);
       padding: var(--spacing) var(--spacing-large);
       border-radius: var(--border-radius);
-      background-color: var(--background);
+      background-color: var(--background-level-1);
       color: var(--foreground);
       border: none;
       cursor: pointer;
@@ -236,7 +240,7 @@
       padding: var(--spacing) var(--spacing-large);
       margin-top: var(--spacing);
       counter-increment: step;
-      background-color: var(--background);
+      background-color: var(--background-level-1);
       border-radius: var(--border-radius);
       filter: drop-shadow(calc(var(--spacing) / 4) calc(var(--spacing) / 4) 0 var(--foreground));
     }
@@ -331,7 +335,7 @@
     }
 
     .text-content>.content {
-      background-color: var(--background);
+      background-color: var(--background-level-1);
       border: none;
       color: var(--foreground);
       width: 100%;
@@ -409,6 +413,14 @@
       100% {
         transform: rotate(360deg);
       }
+    }
+
+    a {
+      color: var(--foreground);
+    }
+
+    a:visited {
+      opacity: .8;
     }
   </style>
 </head>
