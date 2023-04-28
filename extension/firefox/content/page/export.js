@@ -90,8 +90,9 @@ function applyScrubs(screenshot) {
 
 async function removeScrubs() {
   const steps = await loadImages();
-  const screenshots = document.querySelectorAll('.screenshot');
-  steps.forEach(({ image }, index) => {
-    screenshots[index].src = image;
+  const screenshots = document.querySelectorAll('.step .screenshot');
+  screenshots.forEach((screenshot) => {
+    const stepIndex = parseInt(screenshot.parentElement.parentElement.parentElement.getAttribute('wtc-step-index'), 10) - 2;
+    screenshot.src = steps[stepIndex].image;
   });
 }

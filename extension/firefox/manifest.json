@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "What-to-click",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "AI-powered how-to documentation creator.",
   "icons": {
     "48": "icons/record.png"
