@@ -15,6 +15,7 @@ document.addEventListener('mousedown', ({ pageX, pageY, target, }) => {
     data: {
       x: pageX,
       y: pageY,
+      documentSize: document.body.getBoundingClientRect(),
       size: imageSize,
       target: {
         innerText: target.innerText,

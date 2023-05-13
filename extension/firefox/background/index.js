@@ -5,12 +5,13 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
       return;
     }
     const sessionKey = `images-${currentSession}`;
+    const screenshotPosition = calculateScreenshotPosition({ x: data.x, y: data.y }, data.documentSize, data.size);
     const image = await browser.tabs.captureVisibleTab({
       format: 'jpeg',
       quality: 95,
       rect: {
-        x: data.x - data.size / 2,
-        y: data.y - data.size / 2,
+        x: screenshotPosition.x,
+        y: screenshotPosition.y,
         width: data.size,
         height: data.size,
       }
@@ -19,6 +20,8 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
       sessionKey,
       [...await localforage.getItem(sessionKey) || [], {
         image,
+        offset: screenshotPosition.offset,
+        size: data.size,
         type: type,
         target: data.target,
         url: data.url,
@@ -57,3 +60,32 @@ browser.browserAction.onClicked.addListener(async () => {
     await browser.browserAction.setBadgeText({ text: 'live' });
   }
 });
+
+function calculateScreenshotPosition(clickPosition = { x: 0, y: 0 }, documentSize = { width: 0, height: 0 }, size = 300) {
+  const x = clickPosition.x - size / 2;
+  const y = clickPosition.y - size / 2;
+  const rect = {
+    top: y,
+    left: x,
+    bottom: y + size,
+    right: x + size,
+  };
+  const documentRect = {
+    top: 0,
+    left: 0,
+    bottom: documentSize.height,
+    right: documentSize.width,
+  };
+  const offset = {
+    top: Math.abs(Math.min(0, documentRect.top + rect.top)),
+    left: Math.abs(Math.min(0, documentRect.left + rect.left)),
+    bottom: Math.abs(Math.min(0, documentRect.bottom - rect.bottom)),
+    right: Math.abs(Math.min(0, documentRect.right - rect.right)),
+  };
+
+  // Avoid screenshots outside the document
+  const correctedX = x + offset.left - offset.right;
+  const correctedY = y + offset.top - offset.bottom;
+
+  return { x: correctedX, y: correctedY, offset };
+}
