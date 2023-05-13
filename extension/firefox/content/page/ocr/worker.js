@@ -1,13 +1,13 @@
-import * as ocr from '../../deps/tesseract@4.0.2.min.js';
+import * as ocr from '../../deps/tesseract@4.0.5.min.js';
 
 let worker;
 
 async function initWorker(root = window.location.origin) {
   const w = await Tesseract.createWorker({
-    workerPath: `${root}/content/deps/worker@4.0.2.min.js`,
+    workerPath: `${root}/content/deps/worker@4.0.5.min.js`,
     workerBlobURL: false,
     langPath: `${root}/content/deps/`,
-    corePath: `https://wtc.wrbl.xyz/tesseract@4.0.2-core-simd.wasm.js`,
+    corePath: `${root}/content/deps/tesseract-core-simd.js`,
     tessedit_create_hocr: '0',
     tessedit_create_tsv: '0',
     tessedit_create_box: '0',
