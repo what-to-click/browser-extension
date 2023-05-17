@@ -187,8 +187,7 @@
     }
 
     .export,
-    .ocr-info,
-    header {
+    .ocr-info {
       display: flex;
     }
 
@@ -333,8 +332,9 @@
       gap: var(--spacing);
     }
 
-    .text-content>.content {
-      background-color: var(--background-level-1);
+    .text-content>.content,
+    .summary {
+      background-color: transparent;
       border: none;
       color: var(--foreground);
       width: 100%;
@@ -346,8 +346,15 @@
       box-sizing: border-box;
     }
 
-    .text-content>.content[readonly] {
+    .text-content>.content[readonly],
+    .summary[readonly] {
       outline: none;
+    }
+
+    header>.summary {
+      width: var(--content-width);
+      display: block;
+      margin: 0 auto;
     }
 
     .text-button {
@@ -444,6 +451,7 @@
   </section>
   <header>
     <h1 wtc-editable autofocus>What to click:</h1>
+    <textarea wtc-editable wtc-textarea class="summary" placeholder="Write an optional summary"></textarea>
   </header>
   <main>
     <section class="steps"></section>
@@ -455,7 +463,8 @@
       <a href="https://github.com/localForage/localForage" target="blank">localforage</a> and
       <a href="https://github.com/naptha/tesseract.js" target="tesseract.js">tesseract.js</a>
     </span>
-    <time datetime=""></time>
+    <span><time datetime=""></time> in <a target="_blank"
+        href="https://addons.mozilla.org/firefox/addon/what-to-click/">What-to-click</a></span>
   </footer>
   <script src="page.js" type="module"></script>
   <style>
