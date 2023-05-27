@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
   "name": "What-to-click",
-  "version": "1.9.1",
+  "version": "1.10.0",
   "description": "Fully offline, AI-powered how-to documentation creator.",
   "icons": {
-    "48": "icons/record.png"
+    "48": "icons/record.svg"
   },
   "permissions": [
     "<all_urls>",
@@ -12,7 +12,7 @@
     "tabs"
   ],
   "browser_action": {
-    "default_icon": "icons/record.png",
+    "default_icon": "icons/record.svg",
     "default_title": "Record what to click"
   },
   "background": {

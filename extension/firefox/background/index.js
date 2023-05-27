@@ -47,7 +47,7 @@ browser.browserAction.onClicked.addListener(async () => {
   const sessionActive = await localforage.getItem('currentSession');
   if (sessionActive) {
     await localforage.setItem('currentSession', null);
-    await browser.browserAction.setIcon({ path: '/icons/record.png' });
+    await browser.browserAction.setIcon({ path: '/icons/record.svg' });
     await browser.browserAction.setBadgeText({ text: '' });
     if ((await localforage.getItem(`images-${sessionActive}`)).length > 0) {
       await browser.tabs.create({ url: `/content/page.html?s=${encodeURIComponent(sessionActive)}`, active: false });
@@ -56,7 +56,7 @@ browser.browserAction.onClicked.addListener(async () => {
     const session = new Date().toISOString();
     await localforage.setItem('currentSession', session);
     await localforage.setItem('sessions', [...(await localforage.getItem('sessions') || []), session]);
-    await browser.browserAction.setIcon({ path: '/icons/stop.png' });
+    await browser.browserAction.setIcon({ path: '/icons/stop.svg' });
     await browser.browserAction.setBadgeText({ text: 'live' });
   }
 });
