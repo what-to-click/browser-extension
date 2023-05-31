@@ -128,7 +128,7 @@
 
     @media screen and (max-width: 699px) {
       :root {
-        --content-width: 100vw;
+        --content-width: 100%;
       }
 
       html {
@@ -150,26 +150,7 @@
 
       .steps>.step {
         scroll-snap-align: start;
-        min-height: 95vh;
         padding-bottom: var(--spacing);
-      }
-    }
-
-    @keyframes gradient {
-      0% {
-        background-position: 0% 50%;
-      }
-
-      25% {
-        background-position: 100% 50%;
-      }
-
-      75% {
-        background-position: 50% 100%;
-      }
-
-      100% {
-        background-position: 0% 50%;
       }
     }
 
@@ -190,6 +171,7 @@
     .export,
     .ocr-info {
       display: flex;
+      gap: var(--spacing);
     }
 
     .export,
@@ -254,7 +236,7 @@
     }
 
     .steps .index::before {
-      font-size: 3rem;
+      font-size: 2.3rem;
       font-weight: bold;
       content: counter(step) ". ";
     }

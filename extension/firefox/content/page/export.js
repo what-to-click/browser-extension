@@ -30,16 +30,18 @@ export function saveHtml() {
   documentToExport.querySelectorAll('[wtc-editable]').forEach((element) => element.removeAttribute('contenteditable'));
   documentToExport.querySelectorAll('[wtc-textarea]').forEach((textarea) => {
     textarea.style = '';
-    const span = new DOMParser().parseFromString(
-      textarea.outerHTML.replace('<textarea', '<span').replace(new RegExp('</textarea>$', 'gm'), '</span>'),
-      'text/html'
-    ).querySelector('span');
-    textarea.replaceWith(span);
+    textarea.outerHTML = textarea.outerHTML
+      .replace('<textarea', '<span')
+      .replace(new RegExp('</textarea>$', 'gm'), '</span>');
   });
-  document.location = `data:text/attachment;,
-  <!DOCTYPE html>
-  ${encodeURIComponent(documentToExport.querySelector('html').innerHTML)}
-  `;
+  const htmlContent = documentToExport.querySelector('html').innerHTML
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
+  const page = `
+    <!DOCTYPE html>
+    ${encodeURIComponent(htmlContent)}
+    `;
+  downloadURI(`data:text/html,${page}`, `What to click ${new Date().toDateString()}.html`);
 }
 
 export async function saveMarkdown() {
@@ -53,7 +55,7 @@ export async function saveMarkdown() {
     `# ${title}
 
 ${descriptions.map((content, index) => `${index + 1}. ${content} \n ![${content}](${screenshots[index]})`).join('\n\n')}
-  `;
+    `;
   download(`What to click ${new Date().toDateString()}.md`, markdown, { type: 'text/markdown' });
   await removeScrubs();
 }
@@ -68,6 +70,16 @@ export function download(filename, data, options = { type: 'text/html' }) {
   el.click();
   document.body.removeChild(el);
   URL.revokeObjectURL(url);
+}
+
+function downloadURI(uri, name) {
+  const link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  link.remove();
 }
 
 function applyScrubs(screenshot) {

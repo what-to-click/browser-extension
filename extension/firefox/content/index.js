@@ -41,9 +41,7 @@ function addIframeMouseDownListener(iframe) {
       });
     }
     iframe.addEventListener('load', attachListener);
-  } catch (e) {
-    console.debug('WTC: unable to attach click listener to ', iframe, e);
-  }
+  } catch (e) { /* Can cause SecurityError, which nothing can be do about */ }
 }
 
 [...document.getElementsByTagName('iframe')].forEach(addIframeMouseDownListener);
