@@ -30,9 +30,11 @@ export function saveHtml() {
   documentToExport.querySelectorAll('[wtc-editable]').forEach((element) => element.removeAttribute('contenteditable'));
   documentToExport.querySelectorAll('[wtc-textarea]').forEach((textarea) => {
     textarea.style = '';
-    textarea.outerHTML = textarea.outerHTML
-      .replace('<textarea', '<span')
-      .replace(new RegExp('</textarea>$', 'gm'), '</span>');
+    const span = new DOMParser().parseFromString(
+      textarea.outerHTML.replace('<textarea', '<span').replace(new RegExp('</textarea>$', 'gm'), '</span>'),
+      'text/html'
+    ).querySelector('span');
+    textarea.replaceWith(span);
   });
   const htmlContent = documentToExport.querySelector('html').innerHTML
     .replace(/&lt;/g, '<')
