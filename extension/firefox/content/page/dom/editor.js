@@ -1,5 +1,6 @@
 export function deleteStep(index = -1) {
   const step = document.querySelector(`[wtc-step-index="${index}"]`);
+  console.debug({ index })
   step.remove();
 }
 

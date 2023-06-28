@@ -329,6 +329,7 @@
       resize: none;
       font-size: 1rem;
       box-sizing: border-box;
+      word-wrap: anywhere;
     }
 
     .text-content>.content[readonly],
@@ -419,11 +420,12 @@
 
 <body>
   <section wtc-editor class="export hidden" aria-label="Export">
-    <button id="exportPdf">Export PDF</button>
+    <button id="exportPdf">Export as PDF</button>
     <button id="exportMd">Export Markdown</button>
-    <button id="saveHtml"
-      title="HTML files are editable and contain all available information, even scrubbed words. Export a PDF or Markdown file to get words scrubbed in an unrecoverable way.">
-      Save HTML (editable scrubs)
+    <button id="exportHtml">Export HTML</button>
+    <button id="saveWtc"
+      title="WTC files are editable and contain all available information, even scrubbed words. Export a PDF, HTML, or Markdown file to get words scrubbed in an unrecoverable way.">
+      Save WTC (editable scrubs)
     </button>
   </section>
   <section wtc-editor class="ocr-info">
