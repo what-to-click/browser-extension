@@ -25,7 +25,7 @@ function StepDescription(child) {
       span({ class: 'index' }),
       child,
     ),
-    button({ class: 'text-button delete-button' }, 'Remove step'),
+    button({ class: 'text-button delete-button', 'wtc-editor': 1 }, 'Remove step'),
   );
 }
 
@@ -36,7 +36,7 @@ export function StartingStep({ url }) {
 }
 
 export function ScreenshotStep({ image, offset, size, target }, index) {
-  const actionDescription = tagToName[target.tagName] ? ` ${tagToName[target.tagName]}` : '';
+  const actionDescription = tagToName[target.tagName] ? `${tagToName[target.tagName]}` : '';
 
   return div({ class: 'step', 'wtc-step-index': index + 2 },
     StepDescription(
