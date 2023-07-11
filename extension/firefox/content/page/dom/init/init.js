@@ -1,7 +1,7 @@
-import { tagToName } from "../tagToName.js";
-import { deleteStep } from "./editor.js";
-import van from "../../deps/mini-van-0.3.8.min.js";
-import { ScreenshotStep, StartingStep } from "./init/ui.js";
+import { tagToName } from "../../tagToName.js";
+import { deleteStep } from "../editor/editor.js";
+import van from "../../../deps/mini-van-0.3.8.min.js";
+import { ScreenshotStep, StartingStep } from "./ui.js";
 
 export async function loadImages(sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s')) {
   return browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });

@@ -1,6 +1,5 @@
 export function deleteStep(index = -1) {
   const step = document.querySelector(`[wtc-step-index="${index}"]`);
-  console.debug({ index })
   step.remove();
 }
 
@@ -28,7 +27,6 @@ export function attachScrubs(screenshots = []) {
         const scrubElement = parser.parseFromString(scrubElementHtml, 'text/html').querySelector('.scrub-element');
         scrubElement.addEventListener('click', () => {
           scrubElement.classList.toggle('scrubbed');
-          scrubElement.c
         });
         overlay.appendChild(scrubElement);
       }

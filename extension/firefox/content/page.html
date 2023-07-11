@@ -17,6 +17,7 @@
       --foreground: #1A1918;
       --background: #FFFCFA;
       --background-level-1: #EDEBE8;
+      --dropdown-overlay: #1a191858;
       --content-width: 50vw;
       --spacing: 1em;
       --spacing-large: 1.4em;
@@ -187,7 +188,22 @@
       margin-bottom: var(--spacing);
     }
 
-    .export>button {
+    .export-options {
+      list-style: none;
+    }
+
+    .export-options ul {
+      padding: 0;
+      margin: 0;
+      margin-top: calc(var(--spacing) / 2);
+    }
+
+    .bring-to-front {
+      z-index: 1000;
+      cursor: progress;
+    }
+
+    .wtc-button {
       box-sizing: border-box;
       margin-right: var(--spacing);
       padding: var(--spacing) var(--spacing-large);
@@ -199,11 +215,11 @@
       transition: .1s ease-out;
     }
 
-    .export>button:hover {
+    .wtc-button:hover {
       filter: drop-shadow(calc(var(--spacing) / 3) calc(var(--spacing) / 3) 0 var(--foreground)) saturate(2);
     }
 
-    .export>button:active {
+    .wtc-button:active {
       filter: drop-shadow(calc(var(--spacing) / 5) calc(var(--spacing) / 5) 0 var(--foreground));
     }
 
@@ -415,17 +431,26 @@
     a:visited {
       opacity: .8;
     }
+
+    .dropdown {
+      position: absolute;
+      inset: 0;
+      background-color: var(--dropdown-overlay);
+      backdrop-filter: brightness(60%) blur(1px);
+    }
+
+    .dropdown>div {
+      position: relative;
+    }
   </style>
 </head>
 
 <body>
   <section wtc-editor class="export hidden" aria-label="Export">
-    <button id="exportPdf">Export as PDF</button>
-    <button id="exportMd">Export Markdown</button>
-    <button id="exportHtml">Export HTML</button>
-    <button id="saveWtc"
+    <button id="exportMenu" class="wtc-button">Export ⏷</button>
+    <button id="saveWtc" class="wtc-button"
       title="WTC files are editable and contain all available information, even scrubbed words. Export a PDF, HTML, or Markdown file to get words scrubbed in an unrecoverable way.">
-      Save WTC (editable scrubs)
+      Save
     </button>
   </section>
   <section wtc-editor class="ocr-info">

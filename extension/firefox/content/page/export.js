@@ -1,4 +1,4 @@
-import { loadImages } from './dom/init.js';
+import { loadImages } from './dom/init/init.js';
 
 export async function savePdf() {
   document.querySelectorAll('.screenshot').forEach(applyScrubs);
