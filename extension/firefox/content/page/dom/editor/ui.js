@@ -9,7 +9,7 @@ function Dropdown(child, target) {
   return div(
     { class: 'dropdown', 'wtc-editor': 1 },
     div(
-      { style: `top: ${bottom}px; left: ${left}px` },
+      { style: `top: ${bottom}px; left: ${left}px; display: inline-block;` },
       child
     ),
   );
