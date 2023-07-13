@@ -1,5 +1,7 @@
 import van from '../../../deps/mini-van-0.3.8.min.js';
-import { saveHtml, saveMarkdown, savePdf } from '../../export.js';
+import { saveHtml } from '../../export/html.js';
+import { saveMarkdown } from '../../export/markdown.js';
+import { savePdf } from '../../export/pdf.js';
 
 const { div, button, li, ul } = van.tags;
 
