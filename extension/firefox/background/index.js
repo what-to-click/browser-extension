@@ -108,12 +108,11 @@ function calculateScreenshotPosition(clickPosition = { x: 0, y: 0 }, documentSiz
 }
 
 browser.webNavigation.onBeforeNavigate.addListener(async (event) => {
-  console.debug({ lastVisited, event });
-  if (lastVisited.url === event.url && lastVisited.tabId === event.tabId) {
-    const currentSession = await localforage.getItem('currentSession');
-    if (currentSession == null) {
-      return;
-    }
+  const currentSession = await localforage.getItem('currentSession');
+  if (currentSession == null) {
+    return;
+  }
+  if (lastVisited.url === event.url && lastVisited.tabId == event.tabId) {
     const sessionKey = `images-${currentSession}`;
     await localforage.setItem(
       sessionKey,
@@ -123,4 +122,5 @@ browser.webNavigation.onBeforeNavigate.addListener(async (event) => {
       }]
     );
   }
+  lastVisited = event;
 });
