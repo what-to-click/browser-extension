@@ -1,4 +1,4 @@
-import { loadImages } from "../../dom/init/init.js";
+import { loadSteps } from "../../dom/init/init.js";
 
 export function applyScrubs(screenshot) {
   const canvas = document.createElement('canvas');
@@ -19,7 +19,7 @@ export function applyScrubs(screenshot) {
 }
 
 export async function removeScrubs() {
-  const steps = await loadImages();
+  const steps = await loadSteps();
   const screenshots = document.querySelectorAll('.step .screenshot');
   screenshots.forEach((screenshot) => {
     const stepIndex = parseInt(screenshot.parentElement.parentElement.parentElement.getAttribute('wtc-step-index'), 10) - 2;

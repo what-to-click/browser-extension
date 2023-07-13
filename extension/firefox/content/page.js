@@ -4,14 +4,12 @@ import { attachOcrInfo } from './page/ocr/worker.js';
 import { attachScrubs } from './page/dom/editor/editor.js';
 import { toggleExportDropdown } from './page/dom/editor/ui.js';
 import { saveWtc } from './page/export/wtc.js';
-import { asJson } from './page/export/json.js';
 
 window.addEventListener('load', async () => {
   await main();
   document.getElementById('exportMenu').addEventListener(
     'click',
-    () => toggleExportDropdown(document.getElementById('exportMenu')
-    ),
+    () => toggleExportDropdown(document.getElementById('exportMenu')),
   );
   document.getElementById('saveWtc').addEventListener('click', saveWtc);
   document.querySelector('[autofocus]').focus();
@@ -20,5 +18,3 @@ window.addEventListener('load', async () => {
   attachScrubs(document.querySelectorAll('.screenshot'));
   attachOcrInfo(document.querySelectorAll('.screenshot'));
 });
-
-asJson();

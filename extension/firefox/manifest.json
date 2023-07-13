@@ -9,7 +9,8 @@
   "permissions": [
     "<all_urls>",
     "activeTab",
-    "tabs"
+    "tabs",
+    "webNavigation"
   ],
   "browser_action": {
     "default_icon": "icons/record.svg",

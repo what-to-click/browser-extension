@@ -1,9 +1,9 @@
 import { tagToName } from "../../tagToName.js";
 import { deleteStep } from "../editor/editor.js";
 import van from "../../../deps/mini-van-0.3.8.min.js";
-import { ScreenshotStep, StartingStep } from "./ui.js";
+import { BackNavigationStep, ScreenshotStep, StartingStep } from "./ui.js";
 
-export async function loadImages(sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s')) {
+export async function loadSteps(sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s')) {
   return browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
 }
 
@@ -33,9 +33,14 @@ function setupDocument(steps = []) {
 }
 
 export async function main() {
-  const images = await loadImages();
-  if (images.length === 0) {
+  const steps = await loadSteps();
+  if (steps.length === 0) {
     return;
   }
-  setupDocument([StartingStep(images[0]), ...images.map(ScreenshotStep)]);
+  function createStep(step, index) {
+    return step.type === 'mousedown'
+      ? ScreenshotStep(step, index)
+      : BackNavigationStep({ url: step.url, index });
+  }
+  setupDocument([StartingStep(steps[0]), ...steps.map(createStep)]);
 }

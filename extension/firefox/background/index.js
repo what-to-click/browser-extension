@@ -1,3 +1,5 @@
+let lastVisited = null;
+
 browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, sender) => {
   if (type === 'mousedown') {
     const currentSession = await localforage.getItem('currentSession');
@@ -27,7 +29,19 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
         url: data.url,
       }]
     );
-
+  } else if (type === 'popstate') {
+    const currentSession = await localforage.getItem('currentSession');
+    if (currentSession == null) {
+      return;
+    }
+    const sessionKey = `images-${currentSession}`;
+    await localforage.setItem(
+      sessionKey,
+      [...await localforage.getItem(sessionKey) || [], {
+        type: type,
+        url: data.url,
+      }]
+    );
   } else if (type === 'fetchImages') {
     return await localforage.getItem(`images-${data.session}`) || [];
   } else if (type === 'fetchSessions') {
@@ -58,6 +72,9 @@ browser.browserAction.onClicked.addListener(async () => {
     await localforage.setItem('sessions', [...(await localforage.getItem('sessions') || []), session]);
     await browser.browserAction.setIcon({ path: '/icons/stop.svg' });
     await browser.browserAction.setBadgeText({ text: 'live' });
+
+    const { id, url } = (await browser.tabs.query({ active: true }))[0];
+    lastVisited = { tabId: id, url };
   }
 });
 
@@ -89,3 +106,21 @@ function calculateScreenshotPosition(clickPosition = { x: 0, y: 0 }, documentSiz
 
   return { x: correctedX, y: correctedY, offset };
 }
+
+browser.webNavigation.onBeforeNavigate.addListener(async (event) => {
+  console.debug({ lastVisited, event });
+  if (lastVisited.url === event.url && lastVisited.tabId === event.tabId) {
+    const currentSession = await localforage.getItem('currentSession');
+    if (currentSession == null) {
+      return;
+    }
+    const sessionKey = `images-${currentSession}`;
+    await localforage.setItem(
+      sessionKey,
+      [...await localforage.getItem(sessionKey) || [], {
+        type: 'backNavigation',
+        url: lastVisited.url,
+      }]
+    );
+  }
+});

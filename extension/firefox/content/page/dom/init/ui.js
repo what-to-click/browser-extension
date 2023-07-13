@@ -35,6 +35,12 @@ export function StartingStep({ url }) {
   );
 }
 
+export function BackNavigationStep({ url, index }) {
+  return div({ class: 'step', 'wtc-step-index': index },
+    StepDescription(span({ class: 'content' }, ['Go back to ', a({ href: url }, url)]))
+  );
+}
+
 export function ScreenshotStep({ image, offset, size, target }, index) {
   const actionDescription = tagToName[target.tagName] ? `${tagToName[target.tagName]}` : '';
 
