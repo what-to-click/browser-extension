@@ -1,5 +1,3 @@
-let lastVisited = null;
-
 browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, sender) => {
   if (type === 'mousedown') {
     const currentSession = await localforage.getItem('currentSession');
@@ -72,9 +70,6 @@ browser.browserAction.onClicked.addListener(async () => {
     await localforage.setItem('sessions', [...(await localforage.getItem('sessions') || []), session]);
     await browser.browserAction.setIcon({ path: '/icons/stop.svg' });
     await browser.browserAction.setBadgeText({ text: 'live' });
-
-    const { id, url } = (await browser.tabs.query({ active: true }))[0];
-    lastVisited = { tabId: id, url };
   }
 });
 
@@ -107,20 +102,20 @@ function calculateScreenshotPosition(clickPosition = { x: 0, y: 0 }, documentSiz
   return { x: correctedX, y: correctedY, offset };
 }
 
-browser.webNavigation.onBeforeNavigate.addListener(async (event) => {
+browser.webNavigation.onCommitted.addListener(async (event) => {
   const currentSession = await localforage.getItem('currentSession');
   if (currentSession == null) {
     return;
   }
-  if (lastVisited.url === event.url && lastVisited.tabId == event.tabId) {
+
+  if (event.transitionQualifiers.includes('forward_back')) {
     const sessionKey = `images-${currentSession}`;
     await localforage.setItem(
       sessionKey,
       [...await localforage.getItem(sessionKey) || [], {
         type: 'backNavigation',
-        url: lastVisited.url,
+        url: event.url,
       }]
     );
   }
-  lastVisited = event;
 });
