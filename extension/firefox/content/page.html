@@ -216,6 +216,37 @@
       transition: .1s ease-out;
     }
 
+    .special {
+      border-radius: var(--border-radius);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .special:hover {
+      filter:
+        drop-shadow(calc((var(--spacing) - 3px) / 3) calc((var(--spacing) - 3px) / 3) 0 #F0CE26) drop-shadow(calc((var(--spacing) - 2px) / 3) calc((var(--spacing) - 2px) / 3) 0 #F01F0F) drop-shadow(calc((var(--spacing) - 1px) / 3) calc((var(--spacing) - 1px) / 3) 0 #26F079) drop-shadow(calc(var(--spacing) / 3) calc(var(--spacing) / 3) 0 #0A02F0) !important;
+    }
+
+    .special:active {
+      filter:
+        drop-shadow(calc((var(--spacing) - 3px) / 5) calc((var(--spacing) - 3px) / 5) 0 #F0CE26) drop-shadow(calc((var(--spacing) - 2px) / 5) calc((var(--spacing) - 2px) / 5) 0 #F01F0F) drop-shadow(calc((var(--spacing) - 1px) / 5) calc((var(--spacing) - 1px) / 5) 0 #26F079) drop-shadow(calc(var(--spacing) / 5) calc(var(--spacing) / 5) 0 #0A02F0) !important;
+    }
+
+    .special:after {
+      content: "";
+      position: absolute;
+      height: 15%;
+      top: 0;
+      width: 100%;
+      left: 0;
+      background: linear-gradient(to right,
+          #F0CE26 0%, #F0CE26 25%,
+          #F01F0F 25%, #F01F0F 50%,
+          #26F079 50%, #26F079 75%,
+          #0A02F0 75%, #0A02F0 100%);
+    }
+
+
     .wtc-button:hover {
       filter: drop-shadow(calc(var(--spacing) / 3) calc(var(--spacing) / 3) 0 var(--foreground)) saturate(2);
     }
@@ -376,6 +407,34 @@
       opacity: 1;
     }
 
+    .special-button-wrapper {
+      background: #596678;
+      width: 100%;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .special-button {
+      width: 400px;
+      height: 50%;
+      background: white;
+      border-radius: 4px;
+
+      background-image: repeating-linear-gradient(to right,
+          #c4e17f 0px, #c4e17f 50px,
+          #f7fdca 50px, #f7fdca 100px,
+          #fad071 100px, #fad071 150px,
+          #f0766b 150px, #f0766b 200px,
+          #db9dbe 200px, #db9dbe 250px,
+          #c49cdf 250px, #c49cdf 300px,
+          #6599e2 300px, #6599e2 350px,
+          #61c2e4 350px, #61c2e4 400px);
+      background-size: 100% 10px;
+      background-repeat: no-repeat;
+    }
+
     footer {
       box-sizing: border-box;
       margin-top: var(--spacing-large);
@@ -453,6 +512,11 @@
       title="WTC files are editable and contain all available information, even scrubbed words. Export a PDF, HTML, or Markdown file to get words scrubbed in an unrecoverable way.">
       Save
     </button>
+    <a target="_blank"
+      href="https://noco.what-to-click.com/dashboard/#/nc/form/1de44087-b7fd-432e-b83c-a96379536b1d/survey"
+      class="wtc-button special" title="This link will take you to an online survey.">
+      1st What-to-click user survey
+    </a>
   </section>
   <section wtc-editor class="ocr-info">
     <p class="ocr-loading-indicator hidden">
