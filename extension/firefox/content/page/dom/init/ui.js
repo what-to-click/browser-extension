@@ -31,13 +31,13 @@ function StepDescription(child) {
 
 export function StartingStep({ url }) {
   return div({ class: 'step', 'wtc-step-index': 1 },
-    StepDescription(span({ class: 'content' }, ['Visit ', a({ href: url }, url)]))
+    StepDescription(span({ class: 'content' }, ['Visit ', a({ href: url }, url), '.']))
   );
 }
 
 export function BackNavigationStep({ url, index }) {
   return div({ class: 'step', 'wtc-step-index': index },
-    StepDescription(span({ class: 'content' }, ['Go back to ', a({ href: url }, url)]))
+    StepDescription(span({ class: 'content' }, ['Go back to ', a({ href: url }, url), '.']))
   );
 }
 
@@ -47,7 +47,7 @@ export function ScreenshotStep({ image, offset, size, target }, index) {
   return div({ class: 'step', 'wtc-step-index': index + 2 },
     StepDescription(
       textarea({ class: 'content', 'wtc-textarea': 0 },
-        `Click "${target.innerText}" ${actionDescription}`
+        `Click "${target.innerText}" ${actionDescription}.`
       ),
     ),
     div({ class: 'step-image' },
