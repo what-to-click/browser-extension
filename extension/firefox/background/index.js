@@ -5,7 +5,12 @@ browser.runtime.onMessage.addListener(async ({ type = 'general', data = {} }, se
       return;
     }
     const sessionKey = `images-${currentSession}`;
-    const screenshotPosition = calculateScreenshotPosition({ x: data.x, y: data.y }, data.documentSize, data.size);
+    const screenshotPosition = calculateScreenshotPosition({
+      x: data.x,
+      y: data.y,
+      scrollX: data.scrollX,
+      scrollY: data.scrollY,
+    }, data.documentSize, data.size);
     const image = await browser.tabs.captureVisibleTab({
       format: 'jpeg',
       quality: 95,
@@ -73,7 +78,7 @@ browser.browserAction.onClicked.addListener(async () => {
   }
 });
 
-function calculateScreenshotPosition(clickPosition = { x: 0, y: 0 }, documentSize = { width: 0, height: 0 }, size = 300) {
+function calculateScreenshotPosition(clickPosition = { x: 0, y: 0, scrollX: 0, scrollY: 0 }, documentSize = { width: 0, height: 0 }, size = 300) {
   const x = clickPosition.x - size / 2;
   const y = clickPosition.y - size / 2;
   const rect = {
@@ -89,10 +94,10 @@ function calculateScreenshotPosition(clickPosition = { x: 0, y: 0 }, documentSiz
     right: documentSize.width,
   };
   const offset = {
-    top: Math.abs(Math.min(0, documentRect.top + rect.top)),
-    left: Math.abs(Math.min(0, documentRect.left + rect.left)),
-    bottom: Math.abs(Math.min(0, documentRect.bottom - rect.bottom)),
-    right: Math.abs(Math.min(0, documentRect.right - rect.right)),
+    top: Math.abs(Math.min(0, documentRect.top + rect.top + clickPosition.scrollY)),
+    left: Math.abs(Math.min(0, documentRect.left + rect.left + clickPosition.scrollX)),
+    bottom: Math.abs(Math.min(0, documentRect.bottom - rect.bottom + clickPosition.scrollY)),
+    right: Math.abs(Math.min(0, documentRect.right - rect.right + clickPosition.scrollX)),
   };
 
   // Avoid screenshots outside the document

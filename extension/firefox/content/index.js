@@ -8,17 +8,19 @@ async function sendMessageToBg({ type = 'general', data = {} } = {}) {
   }
 }
 
-document.addEventListener('mousedown', ({ pageX, pageY, target, }) => {
-  sendMessageToBg(createMouseDownRecord(pageX, pageY, target));
+document.addEventListener('mousedown', ({ pageX, pageY, target }) => {
+  sendMessageToBg(createMouseDownRecord(pageX, pageY, window.scrollX, window.scrollY, target));
 });
 
-function createMouseDownRecord(pageX, pageY, target) {
+function createMouseDownRecord(pageX, pageY, scrollX, scrollY, target) {
   const imageSize = Math.max(window.screen.availHeight, window.screen.availWidth) * .25;
   return {
     type: 'mousedown',
     data: {
       x: pageX,
       y: pageY,
+      scrollX,
+      scrollY,
       documentSize: document.body.getBoundingClientRect(),
       size: imageSize,
       target: {
@@ -37,7 +39,7 @@ function addIframeMouseDownListener(iframe) {
       iframeDoc.addEventListener('mousedown', ({ pageX, pageY, target }) => {
         const iframePos = iframe.getBoundingClientRect();
         const clickPosition = { x: pageX + iframePos.left, y: pageY + iframePos.top };
-        sendMessageToBg(createMouseDownRecord(clickPosition.x, clickPosition.y, target));
+        sendMessageToBg(createMouseDownRecord(clickPosition.x, clickPosition.y, window.scrollX, window.scrollY, target));
       });
     }
     iframe.addEventListener('load', attachListener);
