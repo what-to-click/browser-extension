@@ -4,15 +4,19 @@ import { applyScrubs, removeScrubs } from "./common/scrubs.js";
 export async function saveMarkdown() {
   document.querySelectorAll('.screenshot').forEach(applyScrubs);
   const title = document.querySelector('h1').innerText;
-  const descriptions = [];
-  document.querySelectorAll('.step-description .content').forEach((el) => descriptions.push(el.value));
-  const screenshots = [];
-  document.querySelectorAll('.step-image .screenshot').forEach((el) => screenshots.push(el.src));
-  const markdown =
-    `# ${title}
+  var markdown = `# ${title}\n\n`;
+  document.querySelectorAll('.step').forEach((el, index) => {
+    let image = el.querySelector('.step-image .screenshot');
+    let description = el.querySelector('.step-description .content');
 
-${descriptions.map((content, index) => `${index + 1}. ${content} \n ![${content}](${screenshots[index]})`).join('\n\n')}
-    `;
+    markdown += `${index + 1}. ${description.textContent}`
+    if (image != undefined && image != null) {
+      markdown += `\n ![${description.textContent.split(`\n`)[0] + '...'}](${image.src})\n\n`;
+    } else {
+      markdown += `\n\n`;
+    }
+  })
+
   download(`What to click ${new Date().toDateString()}.md`, markdown, { type: 'text/markdown' });
   await removeScrubs();
 }
