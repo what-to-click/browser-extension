@@ -4,7 +4,20 @@ import van from "../../../deps/mini-van-0.3.8.min.js";
 import { BackNavigationStep, ScreenshotStep, StartingStep } from "./ui.js";
 
 export async function loadSteps(sessionId = new URLSearchParams(window.location.href.split('?')[1]).get('s')) {
-  return browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
+  async function tryFetchExtension() {
+    try {
+      return browser.runtime.sendMessage({ type: 'fetchImages', data: { session: sessionId } });
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
+  async function tryFetchLocal() {
+    return localforage.getItem(sessionId);
+  }
+
+  return (await tryFetchExtension()) || (await tryFetchLocal());
 }
 
 function setupDocument(steps = []) {
@@ -42,5 +55,10 @@ export async function main() {
       ? ScreenshotStep(step, index)
       : BackNavigationStep({ url: step.url, index });
   }
-  setupDocument([StartingStep(steps[0]), ...steps.map(createStep)]);
+  const documentSteps = []
+  if (steps[0].url) {
+    documentSteps.push(StartingStep(steps[0]));
+  }
+
+  setupDocument([...documentSteps, ...steps.map(createStep)]);
 }
