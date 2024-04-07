@@ -1,4 +1,4 @@
-# <img src="https://what-to-click.com/assets/logo.svg" height=36 align="left"> What-to-click browser extension
+# <img src="https://what-to-click.com/assets/logo.svg" height=36 align="left" alt="What-to-click logo"> What-to-click browser extension
 
 Tired of showing your teammates what to click in yet another web-based service added to your project? Worry not, you can now generate a step-by-step documentation of the workflow as you go! Start recording, go through the workflow, and adjust descriptions if necessary.
 
