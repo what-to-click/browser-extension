@@ -1,0 +1,17 @@
+{
+  "version": {
+    "license": "LGPL-3.0-or-later"
+  },
+  "categories": {
+    "firefox": [
+      "other"
+    ]
+  },
+  "requires_payment": false,
+  "homepage": {
+    "en-US": "https://what-to-click.com"
+  },
+  "support_email": {
+    "en-US": "hey@what-to-click.com"
+  }
+}

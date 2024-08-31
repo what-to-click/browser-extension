@@ -17,4 +17,11 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: build.tar.gz
+          files: |
+            web-ext-artifacts/build.tar.gz
+            web-ext-artifacts/build.zip
+      - name: Publish
+        env:
+          ADDONS_MOZ_JWT_ISSUER: ${{ secrets.ADDONS_MOZ_JWT_ISSUER }}
+          ADDONS_MOZ_JWT_SECRET: ${{ secrets.ADDONS_MOZ_JWT_SECRET }}
+        run: make publish

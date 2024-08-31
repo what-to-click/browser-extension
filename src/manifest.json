@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "What-to-click",
-  "version": "1.12.5",
+  "version": "1.12.6",
   "description": "Fully offline, AI-powered how-to documentation creator.",
   "icons": {
     "48": "icons/record.svg"
@@ -38,6 +38,11 @@
       "suggested_key": {
         "default": "Alt+R"
       }
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{7feef224-a737-4d04-b0c1-ea47d4cad70a}"
     }
   }
 }
