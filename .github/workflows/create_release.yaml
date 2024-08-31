@@ -12,6 +12,9 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@v4
+          version: lts/*
+      - run: npm install --global web-ext
       - uses: actions/checkout@v4
       - run: make build
       - name: Release
