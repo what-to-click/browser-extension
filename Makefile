@@ -13,4 +13,5 @@ publish:
 		--source-dir src \
 		--api-key $(ADDONS_MOZ_JWT_ISSUER) --api-secret $(ADDONS_MOZ_JWT_SECRET) \
 		--channel listed \
+		--approval-timeout 0 \
 		--amo-metadata ./amo-metadata.json
