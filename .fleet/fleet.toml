@@ -1,0 +1,35 @@
+version = 1
+
+[agent]
+tool           = "opencode"
+prompt_file    = "prompts/task.md"
+max_iterations = 3
+llm_env        = "OPENCODE_GO_SUBSCRIPTION_KEY"
+
+[setup]
+script = "setup.sh"
+
+[verify]
+script = "verify.sh"
+
+[pr]
+branch_prefix = "fleet/"
+base          = "main"
+title         = "{{issue.key}}: {{issue.summary}}"
+labels        = ["agent"]
+body_file     = "pr-template.md"
+
+[platform]
+os       = "linux"
+requires = []
+arch     = "amd64"
+
+[coi]
+profile = ""
+network = "restricted"
+timeout = "30m"
+
+[comment]
+enabled = true
+mode    = "auto"
+reply   = true
