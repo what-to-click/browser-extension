@@ -4,4 +4,4 @@
 set -euo pipefail
 
 echo "[fleet] verify: web-ext lint"
-web-ext lint --source-dir src
+./node_modules/.bin/web-ext lint --source-dir src
