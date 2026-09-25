@@ -1,6 +1,27 @@
 import { downloadURI } from "./common/download.js";
 import { applyScrubs, removeScrubs } from "./common/scrubs.js";
 
+const lightboxScript = `
+  (() => {
+    document.addEventListener('click', (event) => {
+      const opener = event.target.closest('.see-fullscreen');
+      if (opener) {
+        const stepImage = opener.closest('.step-image');
+        const lightbox = stepImage.querySelector('.lightbox');
+        document.querySelectorAll('.lightbox.open').forEach((element) => element.classList.remove('open'));
+        lightbox.querySelector('.lightbox-image').src = stepImage.querySelector('.screenshot').src;
+        document.body.appendChild(lightbox);
+        lightbox.classList.add('open');
+        return;
+      }
+      const lightbox = event.target.closest('.lightbox');
+      if (lightbox && (event.target === lightbox || event.target.closest('.lightbox-close'))) {
+        lightbox.classList.remove('open');
+      }
+    });
+  })();
+`;
+
 export async function saveHtml() {
   document.querySelectorAll('.screenshot').forEach(applyScrubs);
   const pageHtml = document.querySelector('html').innerHTML;
@@ -17,6 +38,10 @@ export async function saveHtml() {
     ).querySelector('span');
     textarea.replaceWith(span);
   });
+  const script = documentToExport.createElement('script');
+  script.type = 'text/javascript';
+  script.textContent = lightboxScript;
+  documentToExport.body.appendChild(script);
 
   const htmlContent = documentToExport.querySelector('html').innerHTML
     .replace(/&lt;/g, '<')

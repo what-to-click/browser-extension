@@ -13,7 +13,7 @@ document.addEventListener('mousedown', ({ pageX, pageY, target }) => {
 });
 
 function createMouseDownRecord(pageX, pageY, scrollX, scrollY, target) {
-  const imageSize = Math.max(window.screen.availHeight, window.screen.availWidth) * .25;
+  const imageSize = Math.max(window.screen.availHeight, window.screen.availWidth);
   return {
     type: 'mousedown',
     data: {
