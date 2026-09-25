@@ -5,6 +5,7 @@ tool           = "opencode"
 prompt_file    = "prompts/task.md"
 max_iterations = 3
 llm_env        = "OPENCODE_GO_SUBSCRIPTION_KEY"
+command        = ["opencode", "run", "--model", "opencode-go/deepseek-v4.1-flash", "{{prompt}}"]
 
 [setup]
 script = "setup.sh"
