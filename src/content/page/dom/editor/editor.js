@@ -3,6 +3,27 @@ export function deleteStep(index = -1) {
   step.remove();
 }
 
+export function attachFullscreenLightboxes(stepImages = []) {
+  for (const stepImage of stepImages) {
+    const button = stepImage.querySelector('.see-fullscreen');
+    const lightbox = stepImage.querySelector('.lightbox');
+    if (!button || !lightbox) {
+      continue;
+    }
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.lightbox.open').forEach((element) => element.classList.remove('open'));
+      lightbox.querySelector('.lightbox-image').src = stepImage.querySelector('.screenshot').src;
+      document.body.appendChild(lightbox);
+      lightbox.classList.add('open');
+    });
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox || event.target.closest('.lightbox-close')) {
+        lightbox.classList.remove('open');
+      }
+    });
+  }
+}
+
 export function attachScrubs(screenshots = []) {
   for (const screenshot of screenshots) {
     const observer = new MutationObserver((mutations, observer) => {

@@ -92,6 +92,11 @@
         width: 200px !important;
       }
 
+      .step-image>.see-fullscreen,
+      .lightbox {
+        display: none !important;
+      }
+
       .steps>.step {
         box-sizing: border-box;
         margin-top: var(--spacing);
@@ -476,6 +481,41 @@
 
     .dropdown>div {
       position: relative;
+    }
+
+    .step-image>.see-fullscreen {
+      justify-self: center;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--dropdown-overlay);
+      backdrop-filter: brightness(60%) blur(1px);
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox>.lightbox-image {
+      max-width: 90vw;
+      max-height: 90vh;
+      box-sizing: border-box;
+      border-radius: calc(var(--border-radius) - .1em);
+      filter: drop-shadow(calc(var(--spacing) / 3) calc(var(--spacing) / 3) 0 var(--foreground));
+    }
+
+    .lightbox>.lightbox-close {
+      position: absolute;
+      top: var(--spacing);
+      right: var(--spacing);
+      opacity: 1;
+      font-size: 1.5rem;
     }
   </style>
 </head>

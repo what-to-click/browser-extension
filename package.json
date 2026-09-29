@@ -1,0 +1,12 @@
+{
+  "name": "what-to-click-browser-extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:firefox": "node --test test/firefox.test.js"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.1"
+  }
+}

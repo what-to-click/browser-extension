@@ -57,6 +57,11 @@ export function ScreenshotStep({ image, offset, size, target }, index) {
         div({ class: 'loading-overlay' }),
         img({ class: 'cursor', style: constructCursorPosition(offset, size), src: cursorPng }),
       ),
+      button({ class: 'text-button see-fullscreen' }, 'See fullscreen'),
+      div({ class: 'lightbox' },
+        button({ class: 'text-button lightbox-close' }, '✕'),
+        img({ class: 'lightbox-image' }),
+      ),
     ),
   );
 }
