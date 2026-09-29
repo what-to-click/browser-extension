@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "test:firefox": "node --test test/firefox.test.js"
   },
   "devDependencies": {
     "jsdom": "^30.1.1"
